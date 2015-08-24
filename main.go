@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/xml"
 	"flag"
+	"fmt"
 	"io"
 	"log"
 	"os"
@@ -11,6 +12,7 @@ import (
 	"runtime"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/Merovius/go-tap"
 )
@@ -136,17 +138,21 @@ func (j *Job) run() JUnitTestSuite {
 	}
 	go io.Copy(os.Stderr, stderr)
 
-	parser, _ := tap.NewParser(stdout)
-	suite := j.newJUnitTestSuite(parser)
+	suite := j.newJUnitTestSuite(stdout)
 
 	cmd.Wait()
 
 	return suite
 }
 
-func (j *Job) newJUnitTestSuite(parser *tap.Parser) JUnitTestSuite {
+func (j *Job) newJUnitTestSuite(reader io.Reader) JUnitTestSuite {
 	className := strings.Replace(j.path, "/", "_", -1)
 	className = strings.Replace(className, ".", "_", -1)
+
+	start := time.Now()
+	lastTestEnd := start
+
+	parser, _ := tap.NewParser(reader)
 
 	ts := JUnitTestSuite{
 		Tests:      0,
@@ -162,10 +168,12 @@ func (j *Job) newJUnitTestSuite(parser *tap.Parser) JUnitTestSuite {
 		if err == io.EOF {
 			break
 		}
+		testEnd := time.Now()
+
 		testCase := JUnitTestCase{
 			Classname: className,
 			Name:      line.Description,
-			Time:      "0.000",
+			Time:      fmt.Sprintf("%.3f", (testEnd.Sub(lastTestEnd)).Seconds()),
 			Failure:   nil,
 		}
 		if !line.Ok {
@@ -178,6 +186,9 @@ func (j *Job) newJUnitTestSuite(parser *tap.Parser) JUnitTestSuite {
 		}
 		ts.Tests++
 		ts.TestCases = append(ts.TestCases, testCase)
+		lastTestEnd = testEnd
 	}
+	end := time.Now()
+	ts.Time = fmt.Sprintf("%.3f", (end.Sub(start)).Seconds())
 	return ts
 }
