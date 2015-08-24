@@ -15,10 +15,12 @@ import (
 	"time"
 
 	"github.com/Merovius/go-tap"
+	"github.com/lestrrat/go-test-mysqld"
 )
 
 type Job struct {
 	path string
+	env  []string
 }
 
 // JUnitTestSuites is a collection of JUnit test suites.
@@ -68,35 +70,51 @@ type JUnitFailure struct {
 }
 
 func main() {
+	var jobs int
+	flag.IntVar(&jobs, "j", 1, "Run N test jobs in parallel")
+	flag.IntVar(&jobs, "jobs", 1, "Run N test jobs in parallel")
 	flag.Parse()
 
 	cpus := runtime.NumCPU()
 	runtime.GOMAXPROCS(cpus)
 
+	files := findTestFiles()
+
 	wg := &sync.WaitGroup{}
-	chanPath := make(chan string)
+	wg2 := &sync.WaitGroup{}
+	chanPath := make(chan string, len(files))
 	chanSuite := make(chan JUnitTestSuite)
-	for i := 0; i < 2; i++ {
+	chanDone := make(chan bool)
+	for i := 0; i < jobs; i++ {
+		wg2.Add(1)
 		go func() {
+			mysqld, _ := mysqltest.NewMysqld(nil)
+			defer mysqld.Stop()
+			defer wg2.Done()
 			for {
-				path := <-chanPath
-				wg.Add(1)
-				job := &Job{
-					path: path,
+				address := mysqld.ConnectString(0)
+
+				select {
+				case path := <-chanPath:
+					job := &Job{
+						path: path,
+						env: []string{
+							fmt.Sprintf("GO_PROVE_MYSQLD=%s", address),
+						},
+					}
+					chanSuite <- job.run()
+					wg.Done()
+				case <-chanDone:
+					return
 				}
-				chanSuite <- job.run()
-				wg.Done()
 			}
 		}()
 	}
 
-	files := findTestFiles()
-
-	go func() {
-		for _, path := range files {
-			chanPath <- path
-		}
-	}()
+	for _, path := range files {
+		wg.Add(1)
+		chanPath <- path
+	}
 
 	suites := JUnitTestSuites{}
 	for range files {
@@ -107,6 +125,11 @@ func main() {
 	os.Stdout.Write(bytes)
 
 	wg.Wait()
+
+	for i := 0; i < jobs; i++ {
+		chanDone <- true
+	}
+	wg2.Wait()
 }
 
 func findTestFiles() []string {
@@ -129,6 +152,7 @@ func findTestFiles() []string {
 
 func (j *Job) run() JUnitTestSuite {
 	cmd := exec.Command("perl", j.path)
+	cmd.Env = j.env
 	stdout, _ := cmd.StdoutPipe()
 	stderr, _ := cmd.StderrPipe()
 
