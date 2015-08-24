@@ -14,13 +14,14 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Merovius/go-tap"
 	"github.com/lestrrat/go-test-mysqld"
+	"github.com/shogo82148/go-tap"
 )
 
 type Job struct {
 	path string
 	env  []string
+	exec string
 }
 
 // JUnitTestSuites is a collection of JUnit test suites.
@@ -71,8 +72,10 @@ type JUnitFailure struct {
 
 func main() {
 	var jobs int
+	var execParam string
 	flag.IntVar(&jobs, "j", 1, "Run N test jobs in parallel")
 	flag.IntVar(&jobs, "jobs", 1, "Run N test jobs in parallel")
+	flag.StringVar(&execParam, "exec", "perl", "")
 	flag.Parse()
 
 	cpus := runtime.NumCPU()
@@ -96,14 +99,17 @@ func main() {
 
 				select {
 				case path := <-chanPath:
+					log.Println("start: " + path)
 					job := &Job{
 						path: path,
 						env: []string{
 							fmt.Sprintf("GO_PROVE_MYSQLD=%s", address),
 						},
+						exec: execParam,
 					}
 					chanSuite <- job.run()
 					wg.Done()
+					log.Println("done: " + path)
 				case <-chanDone:
 					return
 				}
@@ -151,7 +157,9 @@ func findTestFiles() []string {
 }
 
 func (j *Job) run() JUnitTestSuite {
-	cmd := exec.Command("perl", j.path)
+	execParam := strings.Split(j.exec, " ")
+	execParam = append(execParam, j.path)
+	cmd := exec.Command(execParam[0], execParam[1:]...)
 	cmd.Env = j.env
 	stdout, _ := cmd.StdoutPipe()
 	stderr, _ := cmd.StderrPipe()
@@ -191,6 +199,10 @@ func (j *Job) newJUnitTestSuite(reader io.Reader) JUnitTestSuite {
 		line, err := parser.Next()
 		if err == io.EOF {
 			break
+		}
+		if err != nil {
+			log.Println(err)
+			continue
 		}
 		testEnd := time.Now()
 
