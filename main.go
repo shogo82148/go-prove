@@ -79,7 +79,10 @@ func main() {
 			for {
 				path := <-chanPath
 				wg.Add(1)
-				chanSuite <- invokeCommand("perl", []string{path})
+				job := &Job{
+					path: path,
+				}
+				chanSuite <- job.run()
 				wg.Done()
 			}
 		}()
@@ -122,8 +125,8 @@ func findTestFiles() []string {
 	return files
 }
 
-func invokeCommand(program string, args []string) JUnitTestSuite {
-	cmd := exec.Command(program, args...)
+func (j *Job) run() JUnitTestSuite {
+	cmd := exec.Command("perl", j.path)
 	stdout, _ := cmd.StdoutPipe()
 	stderr, _ := cmd.StderrPipe()
 
@@ -134,19 +137,22 @@ func invokeCommand(program string, args []string) JUnitTestSuite {
 	go io.Copy(os.Stderr, stderr)
 
 	parser, _ := tap.NewParser(stdout)
-	suite := newJUnitTestSuite(parser)
+	suite := j.newJUnitTestSuite(parser)
 
 	cmd.Wait()
 
 	return suite
 }
 
-func newJUnitTestSuite(parser *tap.Parser) JUnitTestSuite {
+func (j *Job) newJUnitTestSuite(parser *tap.Parser) JUnitTestSuite {
+	className := strings.Replace(j.path, "/", "_", -1)
+	className = strings.Replace(className, ".", "_", -1)
+
 	ts := JUnitTestSuite{
 		Tests:      0,
 		Failures:   0,
 		Time:       "0.000",
-		Name:       "hoge",
+		Name:       className,
 		Properties: []JUnitProperty{},
 		TestCases:  []JUnitTestCase{},
 	}
@@ -157,7 +163,7 @@ func newJUnitTestSuite(parser *tap.Parser) JUnitTestSuite {
 			break
 		}
 		testCase := JUnitTestCase{
-			Classname: "hoge",
+			Classname: className,
 			Name:      line.Description,
 			Time:      "0.000",
 			Failure:   nil,
