@@ -18,6 +18,9 @@ import (
 	"github.com/shogo82148/go-tap"
 )
 
+var exitCode = 0
+var mutex *sync.Mutex
+
 type Job struct {
 	path string
 	env  []string
@@ -71,6 +74,12 @@ type JUnitFailure struct {
 }
 
 func main() {
+	mutex = &sync.Mutex{}
+	proveMain()
+	os.Exit(exitCode)
+}
+
+func proveMain() {
 	var jobs int
 	var execParam string
 	flag.IntVar(&jobs, "j", 1, "Run N test jobs in parallel")
@@ -217,14 +226,26 @@ func (j *Job) newJUnitTestSuite(reader io.Reader) JUnitTestSuite {
 			testCase.Failure = &JUnitFailure{
 				Message:  "not ok",
 				Type:     "",
-				Contents: line.String(),
+				Contents: line.Diagnostic,
 			}
 		}
 		ts.Tests++
 		ts.TestCases = append(ts.TestCases, testCase)
 		lastTestEnd = testEnd
 	}
+
+	suite, _ := parser.Suite()
+	if !suite.Ok {
+		markAsFail()
+	}
+
 	end := time.Now()
 	ts.Time = fmt.Sprintf("%.3f", (end.Sub(start)).Seconds())
 	return ts
+}
+
+func markAsFail() {
+	mutex.Lock()
+	defer mutex.Unlock()
+	exitCode = 1
 }
