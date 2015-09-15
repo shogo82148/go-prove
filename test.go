@@ -11,9 +11,10 @@ import (
 )
 
 type Test struct {
-	Path string
-	Env  []string
-	Exec string
+	Path  string
+	Env   []string
+	Exec  string
+	Suite *tap.Testsuite
 }
 
 func (t *Test) Run() *tap.Testsuite {
@@ -35,5 +36,6 @@ func (t *Test) Run() *tap.Testsuite {
 
 	cmd.Wait()
 
+	t.Suite = suite
 	return suite
 }

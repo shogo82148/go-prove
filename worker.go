@@ -27,7 +27,8 @@ func (w *Worker) run() {
 		for test := range w.prove.chanTests {
 			test.Env = w.Env
 			log.Printf("start %s", test.Path)
-			w.prove.chanSuites <- test.Run()
+			test.Run()
+			w.prove.chanSuites <- test
 			log.Printf("finish %s", test.Path)
 		}
 		w.prove.wgWorkers.Done()

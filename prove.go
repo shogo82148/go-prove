@@ -6,8 +6,6 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
-
-	"github.com/shogo82148/go-tap"
 )
 
 type Prove struct {
@@ -24,7 +22,7 @@ type Prove struct {
 	Plugins []Plugin
 
 	chanTests  chan *Test
-	chanSuites chan *tap.Testsuite
+	chanSuites chan *Test
 	wgWorkers  *sync.WaitGroup
 
 	Mutex    *sync.Mutex
@@ -33,7 +31,7 @@ type Prove struct {
 
 type Formatter interface {
 	// Called to create a new test
-	OpenTest(suite *tap.Testsuite)
+	OpenTest(test *Test)
 
 	// Prints the report after all tests are run
 	Report()
@@ -50,7 +48,7 @@ func NewProve() *Prove {
 		ExitCode:   0,
 		Plugins:    []Plugin{},
 		chanTests:  make(chan *Test),
-		chanSuites: make(chan *tap.Testsuite),
+		chanSuites: make(chan *Test),
 		wgWorkers:  &sync.WaitGroup{},
 	}
 	p.FlagSet.IntVar(&p.Jobs, "j", 1, "Run N test jobs in parallel")

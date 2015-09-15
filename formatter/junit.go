@@ -4,9 +4,10 @@ import (
 	"encoding/xml"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
-	"github.com/shogo82148/go-tap"
+	"github.com/shogo82148/go-prove"
 )
 
 type JUnitFormatter struct {
@@ -63,19 +64,24 @@ func (f *JUnitFormatter) formatDuration(d time.Duration) string {
 	return fmt.Sprintf("%.3f", d.Seconds())
 }
 
-func (f *JUnitFormatter) OpenTest(suite *tap.Testsuite) {
+func (f *JUnitFormatter) OpenTest(test *prove.Test) {
+	className := strings.Replace(test.Path, "/", "_", -1)
+	className = strings.Replace(className, ".", "_", -1)
+
+	suite := test.Suite
+
 	ts := JUnitTestSuite{
 		Tests:      0,
 		Failures:   0,
 		Time:       f.formatDuration(suite.Time),
-		Name:       "hoge",
+		Name:       className,
 		Properties: []JUnitProperty{},
 		TestCases:  []JUnitTestCase{},
 	}
 
 	for _, line := range suite.Tests {
 		testCase := JUnitTestCase{
-			Classname: "fuga",
+			Classname: className,
 			Name:      line.Description,
 			Time:      f.formatDuration(line.Time),
 			Failure:   nil,
