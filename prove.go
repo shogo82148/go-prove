@@ -21,6 +21,8 @@ type Prove struct {
 
 	Formatter Formatter
 
+	Plugins []Plugin
+
 	chanTests  chan *Test
 	chanSuites chan *tap.Testsuite
 	wgWorkers  *sync.WaitGroup
@@ -37,11 +39,16 @@ type Formatter interface {
 	Report()
 }
 
+type Plugin interface {
+	Run(w *Worker, f func())
+}
+
 func NewProve() *Prove {
 	p := &Prove{
 		FlagSet:    flag.NewFlagSet("prove", flag.ExitOnError),
 		Mutex:      &sync.Mutex{},
 		ExitCode:   0,
+		Plugins:    []Plugin{},
 		chanTests:  make(chan *Test),
 		chanSuites: make(chan *tap.Testsuite),
 		wgWorkers:  &sync.WaitGroup{},

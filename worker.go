@@ -1,12 +1,16 @@
 package prove
 
+import "os"
+
 type Worker struct {
 	prove *Prove
+	Env   []string
 }
 
 func NewWorker(p *Prove) *Worker {
 	return &Worker{
 		prove: p,
+		Env:   os.Environ(),
 	}
 }
 
@@ -16,8 +20,17 @@ func (w *Worker) Start() {
 }
 
 func (w *Worker) run() {
-	for test := range w.prove.chanTests {
-		w.prove.chanSuites <- test.Run()
+	f := func() {
+		for test := range w.prove.chanTests {
+			test.Env = w.Env
+			w.prove.chanSuites <- test.Run()
+		}
+		w.prove.wgWorkers.Done()
 	}
-	w.prove.wgWorkers.Done()
+
+	for _, p := range w.prove.Plugins {
+		f = func() { p.Run(w, f) }
+	}
+
+	f()
 }
