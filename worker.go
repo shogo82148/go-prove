@@ -1,6 +1,9 @@
 package prove
 
-import "os"
+import (
+	"log"
+	"os"
+)
 
 type Worker struct {
 	prove *Prove
@@ -23,13 +26,17 @@ func (w *Worker) run() {
 	f := func() {
 		for test := range w.prove.chanTests {
 			test.Env = w.Env
+			log.Printf("start %s", test.Path)
 			w.prove.chanSuites <- test.Run()
+			log.Printf("finish %s", test.Path)
 		}
 		w.prove.wgWorkers.Done()
 	}
 
 	for _, p := range w.prove.Plugins {
-		f = func() { p.Run(w, f) }
+		f = func(g func()) func() {
+			return func() { p.Run(w, g) }
+		}(f)
 	}
 
 	f()
