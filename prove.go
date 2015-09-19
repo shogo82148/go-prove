@@ -24,6 +24,7 @@ type Prove struct {
 	chanTests  chan *Test
 	chanSuites chan *Test
 	wgWorkers  *sync.WaitGroup
+	pluginArgs string
 
 	Mutex    *sync.Mutex
 	ExitCode int
@@ -41,6 +42,22 @@ type Plugin interface {
 	Run(w *Worker, f func())
 }
 
+type PluginLoader interface {
+	Load(name, args string) Plugin
+}
+
+type PluginLoaderFunc func(name, args string) Plugin
+
+func (f PluginLoaderFunc) Load(name, args string) Plugin {
+	return f(name, args)
+}
+
+var pluginLoaders map[string]PluginLoader = map[string]PluginLoader{}
+
+func AppendPluginLoader(name string, loader PluginLoader) {
+	pluginLoaders[name] = loader
+}
+
 func NewProve() *Prove {
 	p := &Prove{
 		FlagSet:    flag.NewFlagSet("prove", flag.ExitOnError),
@@ -54,11 +71,23 @@ func NewProve() *Prove {
 	p.FlagSet.IntVar(&p.Jobs, "j", 1, "Run N test jobs in parallel")
 	p.FlagSet.IntVar(&p.Jobs, "job", 1, "Run N test jobs in parallel")
 	p.FlagSet.StringVar(&p.Exec, "exec", "perl", "")
+	p.FlagSet.StringVar(&p.pluginArgs, "plugin", "", "plugins")
 	return p
 }
 
 func (p *Prove) ParseArgs(args []string) {
 	p.FlagSet.Parse(args)
+
+	if p.pluginArgs != "" {
+		plugins := strings.Split(p.pluginArgs, ",")
+		for _, name := range plugins {
+			loader, ok := pluginLoaders[name]
+			if !ok {
+				panic("plugin " + name + " not found")
+			}
+			p.Plugins = append(p.Plugins, loader.Load(name, ""))
+		}
+	}
 }
 
 func (p *Prove) Run(args []string) {

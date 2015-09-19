@@ -10,6 +10,12 @@ import (
 
 type TestMysqld struct{}
 
+func init() {
+	prove.AppendPluginLoader("mysqld", prove.PluginLoaderFunc(func(name, args string) prove.Plugin {
+		return &TestMysqld{}
+	}))
+}
+
 func (p *TestMysqld) Run(w *prove.Worker, f func()) {
 	log.Printf("run mysqld")
 	mysqld, err := mysqltest.NewMysqld(nil)
