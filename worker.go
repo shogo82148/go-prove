@@ -28,6 +28,9 @@ func (w *Worker) run() {
 			test.Env = w.Env
 			log.Printf("start %s", test.Path)
 			test.Run()
+			if !test.Suite.Ok {
+				w.prove.MarkAsFail()
+			}
 			w.prove.chanSuites <- test
 			log.Printf("finish %s", test.Path)
 		}
