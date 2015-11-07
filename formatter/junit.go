@@ -26,6 +26,7 @@ type JUnitTestSuite struct {
 	XMLName    xml.Name        `xml:"testsuite"`
 	Tests      int             `xml:"tests,attr"`
 	Failures   int             `xml:"failures,attr"`
+	Errors     int             `xml:"errors,attr,omitempty"`
 	Time       string          `xml:"time,attr"`
 	Name       string          `xml:"name,attr"`
 	Properties []JUnitProperty `xml:"properties>property,omitempty"`
@@ -95,6 +96,34 @@ func (f *JUnitFormatter) OpenTest(test *prove.Test) {
 			}
 		}
 		ts.Tests++
+		ts.TestCases = append(ts.TestCases, testCase)
+	}
+
+	if suite.Plan < 0 {
+		ts.Errors++
+		testCase := JUnitTestCase{
+			Classname: className,
+			Name:      "Test died too soon, even before plan.",
+			Time:      "0.000",
+			Failure: &JUnitFailure{
+				Message:  "The test suite died before a plan was produced. You need to have a plan.",
+				Type:     "Plan",
+				Contents: "No plan",
+			},
+		}
+		ts.TestCases = append(ts.TestCases, testCase)
+	} else if len(suite.Tests) != suite.Plan {
+		ts.Errors++
+		testCase := JUnitTestCase{
+			Classname: className,
+			Name:      "Number of runned tests does not match plan.",
+			Time:      "0.000",
+			Failure: &JUnitFailure{
+				Message:  "Some test were not executed, The test died prematurely.",
+				Type:     "Plan",
+				Contents: "Bad plan",
+			},
+		}
 		ts.TestCases = append(ts.TestCases, testCase)
 	}
 
