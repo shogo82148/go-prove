@@ -55,7 +55,7 @@ func TestJUnit_fail(t *testing.T) {
 	formatter := &JUnitFormatter{}
 	formatter.OpenTest(test)
 	b, _ := xml.MarshalIndent(formatter.Suites, "", "")
-	ok, err := regexp.Match(`<testsuites><testsuite tests="1" failures="0" time="0.[0-9]+" name="[^"]*"><properties></properties><testcase classname="[^"]*" name="" time="0.[0-9]+"><failure message="not ok" type=""></failure></testcase></testsuite></testsuites>`, b)
+	ok, err := regexp.Match(`<testsuites><testsuite tests="1" failures="1" time="0.[0-9]+" name="[^"]*"><properties></properties><testcase classname="[^"]*" name="" time="0.[0-9]+"><failure message="not ok" type=""></failure></testcase></testsuite></testsuites>`, b)
 	if err != nil {
 		t.Error(err)
 	}
