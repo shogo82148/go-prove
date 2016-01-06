@@ -7,7 +7,7 @@ go:
 before_deploy:
   - go get -t -v ./...
   - go get github.com/mitchellh/gox
-  - gox -arch="darwin/386 darwin/amd64 linux/386 linuc/amd64 linux/arm freebsd/386 freebsd/amd64 freebsd/arm openbsd/386 openbsd/amd64 netbsd/386 netbsd/amd64 netbsd/arm" -output build/{{.Dir}}_{{.OS}}_{{.Arch}} github.com/shogo82148/go-prove/cli/go-prove
+  - gox -os="darwin linux freebsd openbsd netbsd" -output build/{{.Dir}}_{{.OS}}_{{.Arch}} github.com/shogo82148/go-prove/cli/go-prove
 deploy:
   provider: releases
   api_key:
