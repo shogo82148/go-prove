@@ -7,8 +7,7 @@ go:
 before_deploy:
   - go get -t -v ./...
   - go get github.com/mitchellh/gox
-  - $GOPATH/bin/gox -build-toolchain
-  - $GOPATH/bin/gox -output build/{{.Dir}}_{{.OS}}_{{.Arch}} github.com/shogo82148/go-prove/cli/go-prove
+  - gox -output build/{{.Dir}}_{{.OS}}_{{.Arch}} github.com/shogo82148/go-prove/cli/go-prove
 deploy:
   provider: releases
   api_key:
