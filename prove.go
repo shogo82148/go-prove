@@ -6,6 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
+
+	"github.com/soh335/sliceflag"
 )
 
 type Prove struct {
@@ -24,7 +26,7 @@ type Prove struct {
 	chanTests  chan *Test
 	chanSuites chan *Test
 	wgWorkers  *sync.WaitGroup
-	pluginArgs string
+	pluginArgs []string
 
 	Mutex    *sync.Mutex
 	ExitCode int
@@ -71,22 +73,27 @@ func NewProve() *Prove {
 	p.FlagSet.IntVar(&p.Jobs, "j", 1, "Run N test jobs in parallel")
 	p.FlagSet.IntVar(&p.Jobs, "job", 1, "Run N test jobs in parallel")
 	p.FlagSet.StringVar(&p.Exec, "exec", "perl", "")
-	p.FlagSet.StringVar(&p.pluginArgs, "plugin", "", "plugins")
+	sliceflag.StringVar(p.FlagSet, &p.pluginArgs, "plugin", []string{}, "plugins")
+	sliceflag.StringVar(p.FlagSet, &p.pluginArgs, "P", []string{}, "plugins")
 	return p
 }
 
 func (p *Prove) ParseArgs(args []string) {
 	p.FlagSet.Parse(args)
 
-	if p.pluginArgs != "" {
-		plugins := strings.Split(p.pluginArgs, ",")
-		for _, name := range plugins {
-			loader, ok := pluginLoaders[name]
-			if !ok {
-				panic("plugin " + name + " not found")
-			}
-			p.Plugins = append(p.Plugins, loader.Load(name, ""))
+	for _, plugin := range p.pluginArgs {
+		a := strings.SplitN(plugin, "=", 2)
+		name := a[0]
+		pluginArgs := ""
+		if len(a) >= 2 {
+			pluginArgs = a[1]
 		}
+
+		loader, ok := pluginLoaders[name]
+		if !ok {
+			panic("plugin " + name + " not found")
+		}
+		p.Plugins = append(p.Plugins, loader.Load(name, pluginArgs))
 	}
 }
 
