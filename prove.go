@@ -2,6 +2,7 @@ package prove
 
 import (
 	"flag"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -27,6 +28,7 @@ type Prove struct {
 	chanSuites chan *Test
 	wgWorkers  *sync.WaitGroup
 	pluginArgs []string
+	version    bool
 
 	Mutex    *sync.Mutex
 	ExitCode int
@@ -72,6 +74,7 @@ func NewProve() *Prove {
 	}
 	p.FlagSet.IntVar(&p.Jobs, "j", 1, "Run N test jobs in parallel")
 	p.FlagSet.IntVar(&p.Jobs, "job", 1, "Run N test jobs in parallel")
+	p.FlagSet.BoolVar(&p.version, "version", false, "Show version of go-prove")
 	p.FlagSet.StringVar(&p.Exec, "exec", "perl", "")
 	sliceflag.StringVar(p.FlagSet, &p.pluginArgs, "plugin", []string{}, "plugins")
 	sliceflag.StringVar(p.FlagSet, &p.pluginArgs, "P", []string{}, "plugins")
@@ -100,6 +103,11 @@ func (p *Prove) ParseArgs(args []string) {
 func (p *Prove) Run(args []string) {
 	if args != nil {
 		p.ParseArgs(args)
+	}
+
+	if p.version {
+		fmt.Printf("go-prove %s\n", Version)
+		return
 	}
 
 	files := p.FindTestFiles()
