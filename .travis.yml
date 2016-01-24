@@ -2,5 +2,33 @@ language: go
 go:
 - '1.2'
 - '1.3'
+- '1.4'
 - 'tip'
 sudo: false
+before_deploy:
+  - go get -t -v ./...
+  - go get github.com/mitchellh/gox
+  - gox -os="darwin linux freebsd openbsd netbsd" -output build/{{.Dir}}_{{.OS}}_{{.Arch}} github.com/shogo82148/go-prove/cli/go-prove
+deploy:
+  provider: releases
+  api_key:
+    secure: JZT08VxburNGSMgFvvbL7UySysoh3zsTYMzw9TbMA8QPELNwQ9ajwOwRI2xsquYbSfh3s58QEZmSH5uGjx5ZCQUEjsBcbOJmfUoTfSBk4V2bqoNV98/bYZJpbsClY/3eEAeqxIqv8bx2dtYqtwZG77/zr6cPEgCwtA1M/0HwThiycycFNr94sU+S+ysvgvSUFl3YpqG9cycfuRyw3w5lT8qEsnpnoNw34VoAN6ZbD2rYIul3oGbXypolQ3nMoGeZTupxvfqZs9So9hqU+CvLRR4myxw7kukON57NAs3RmGYtjs9z+c12+HWY7sUVe+1T2W9EXBVCLrZssXsDEgMg7RH7MKW70dYbW7vQA3zbLPpV0yuyskrDHfD1hEBHQIFpE4zEFw2n/YF7UoDQ3GpHxFM9y5wFSy4KtbOjJC0+acVAHHOGPC6qh8j4v9HkBTlSLT8oG30Uxb9CtXQG/Z2d+xqOa4j3GMaLXK6jhLClKvsZnV0XJWfmlvZe3ZIbYDqQcs4MjPCK7s4dyqk0n8dOKWQcIPWqNGN/8CgrHoFSrzbY2RQt5/C0oY2HvVMmGgWG/Of1E0q4SVt7C8TRxl88C02B/BDOvzZSxGBYH8au5hFlWD+hdF8W6MCJPU38ZVf17pYZtmHiZZt+8nxbCtLSABlJJlXvRLfjyQcsj5w+eSs=
+  file:
+    - build/go-prove_darwin_386
+    - build/go-prove_darwin_amd64
+    - build/go-prove_linux_386
+    - build/go-prove_linux_amd64
+    - build/go-prove_linux_arm
+    - build/go-prove_freebsd_386
+    - build/go-prove_freebsd_amd64
+    - build/go-prove_openbsd_386
+    - build/go-prove_openbsd_amd64
+    - build/go-prove_freebsd_arm
+    - build/go-prove_netbsd_386
+    - build/go-prove_netbsd_amd64
+    - build/go-prove_netbsd_arm
+  on:
+    go: tip
+    repo: shogo82148/go-prove
+    tags: true
+
