@@ -18,20 +18,22 @@ type Harriet struct {
 }
 
 func init() {
-	prove.AppendPluginLoader("harriet", prove.PluginLoaderFunc(func(name, args string) prove.Plugin {
-		cmd := "harriet"
-		cmdArgs := []string{"t/harriet"}
+	prove.AppendPluginLoader("harriet", prove.PluginLoaderFunc(harrietLoader))
+}
 
-		a, _ := shellwords.Parse(args)
-		if len(a) > 0 {
-			cmd = a[0]
-			cmdArgs = a[1:]
-		}
-		return &Harriet{
-			cmd:  cmd,
-			args: cmdArgs,
-		}
-	}))
+func harrietLoader(name, args string) prove.Plugin {
+	cmd := "harriet"
+	cmdArgs := []string{"t/harriet"}
+
+	a, _ := shellwords.Parse(args)
+	if len(a) > 0 {
+		cmd = a[0]
+		cmdArgs = a[1:]
+	}
+	return &Harriet{
+		cmd:  cmd,
+		args: cmdArgs,
+	}
 }
 
 func (p *Harriet) Run(w *prove.Worker, f func()) {
