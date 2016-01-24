@@ -4,8 +4,8 @@ import (
 	"io"
 	"os"
 	"os/exec"
-	"strings"
 
+	"github.com/mattn/go-shellwords"
 	"github.com/shogo82148/go-tap"
 )
 
@@ -17,7 +17,7 @@ type Test struct {
 }
 
 func (t *Test) Run() *tap.Testsuite {
-	execParam := strings.Split(t.Exec, " ")
+	execParam, _ := shellwords.Parse(t.Exec)
 	execParam = append(execParam, t.Path)
 	cmd := exec.Command(execParam[0], execParam[1:]...)
 	cmd.Env = t.Env
