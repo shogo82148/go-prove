@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"sync"
 
@@ -106,7 +107,7 @@ func (p *Prove) Run(args []string) {
 	}
 
 	if p.version {
-		fmt.Printf("go-prove %s\n", Version)
+		fmt.Printf("go-prove %s, %s built for %s/%s\n", Version, runtime.Version(), runtime.GOOS, runtime.GOARCH)
 		return
 	}
 
