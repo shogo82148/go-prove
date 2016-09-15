@@ -58,7 +58,7 @@ type JUnitProperty struct {
 type JUnitFailure struct {
 	Message  string `xml:"message,attr"`
 	Type     string `xml:"type,attr"`
-	Contents string `xml:",chardata"`
+	Contents string `xml:",cdata"`
 }
 
 func (f *JUnitFormatter) formatDuration(d time.Duration) string {
@@ -92,7 +92,7 @@ func (f *JUnitFormatter) OpenTest(test *prove.Test) {
 			testCase.Failure = &JUnitFailure{
 				Message:  "not ok",
 				Type:     "",
-				Contents: line.Diagnostic,
+				Contents: line.FindOrigDiagnostic(),
 			}
 		}
 		ts.Tests++
