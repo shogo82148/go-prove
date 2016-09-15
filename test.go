@@ -1,8 +1,7 @@
 package prove
 
 import (
-	"io"
-	"os"
+	"bytes"
 	"os/exec"
 
 	"github.com/mattn/go-shellwords"
@@ -21,26 +20,16 @@ func (t *Test) Run() *tap.Testsuite {
 	execParam = append(execParam, t.Path)
 	cmd := exec.Command(execParam[0], execParam[1:]...)
 	cmd.Env = t.Env
-	stdout, err := cmd.StdoutPipe()
-	if err != nil {
+	var b bytes.Buffer
+	cmd.Stdout = &b
+	cmd.Stderr = &b
+	if err := cmd.Run(); err != nil {
 		t.Suite = errorTestsuite(err)
 		return t.Suite
 	}
-	stderr, err := cmd.StderrPipe()
-	if err != nil {
-		t.Suite = errorTestsuite(err)
-		return t.Suite
-	}
-
-	err = cmd.Start()
-	if err != nil {
-		t.Suite = errorTestsuite(err)
-		return t.Suite
-	}
-	go io.Copy(os.Stderr, stderr)
 
 	var suite *tap.Testsuite
-	parser, err := tap.NewParser(stdout)
+	parser, err := tap.NewParser(&b)
 	if err != nil {
 		suite = errorTestsuite(err)
 	} else {
@@ -49,8 +38,6 @@ func (t *Test) Run() *tap.Testsuite {
 			suite = errorTestsuite(err)
 		}
 	}
-
-	cmd.Wait()
 
 	t.Suite = suite
 	return suite
