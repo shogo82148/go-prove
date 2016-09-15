@@ -92,7 +92,7 @@ func (f *JUnitFormatter) OpenTest(test *prove.Test) {
 			testCase.Failure = &JUnitFailure{
 				Message:  "not ok",
 				Type:     "",
-				Contents: line.Diagnostic,
+				Contents: line.FindOrigDiagnostic(),
 			}
 		}
 		ts.Tests++
