@@ -44,6 +44,8 @@ type JUnitTestCase struct {
 	Time        string            `xml:"time,attr"`
 	SkipMessage *JUnitSkipMessage `xml:"skipped,omitempty"`
 	Failure     *JUnitFailure     `xml:"failure,omitempty"`
+	SystemOut   *JUnitSystemOut   `xml:"system-out,omitempty"`
+	SystemErr   *JUnitSystemErr   `xml:"system-err,omitempty"`
 }
 
 // JUnitSkipMessage contains the reason why a testcase was skipped.
@@ -61,6 +63,16 @@ type JUnitProperty struct {
 type JUnitFailure struct {
 	Message  string `xml:"message,attr"`
 	Type     string `xml:"type,attr"`
+	Contents string `xml:",cdata"`
+}
+
+// JUnitSystemOut contains the standard out.
+type JUnitSystemOut struct {
+	Contents string `xml:",cdata"`
+}
+
+// JunitSystemErr contains the standard error.
+type JUnitSystemErr struct {
 	Contents string `xml:",cdata"`
 }
 
@@ -84,7 +96,9 @@ func (f *JUnitFormatter) OpenTest(test *prove.Test) {
 			Classname: className,
 			Name:      line.Description,
 			Time:      f.formatDuration(line.Time),
-			Failure:   nil,
+			SystemOut: &JUnitSystemOut{
+				Contents: line.GoString(),
+			},
 		}
 		if !line.Ok {
 			ts.Failures++
