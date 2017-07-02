@@ -30,6 +30,7 @@ type Prove struct {
 	wgWorkers  *sync.WaitGroup
 	pluginArgs []string
 	version    bool
+	help       bool
 
 	Mutex    *sync.Mutex
 	ExitCode int
@@ -80,6 +81,9 @@ func NewProve() *Prove {
 	p.FlagSet.StringVar(&p.Exec, "e", "perl", "shorthand of -exec option")
 	p.FlagSet.StringVar(&p.Exec, "exec", "perl", "Interpreter to run the tests")
 	p.FlagSet.BoolVar(&p.Merge, "merge", false, "Merge test scripts' STDERR with their STDOUT")
+	p.FlagSet.BoolVar(&p.help, "h", false, "show this help")
+	p.FlagSet.BoolVar(&p.help, "help", false, "show this help")
+	p.FlagSet.BoolVar(&p.help, "?", false, "show this help")
 	sliceflag.StringVar(p.FlagSet, &p.pluginArgs, "plugin", []string{}, "plugins")
 	sliceflag.StringVar(p.FlagSet, &p.pluginArgs, "P", []string{}, "plugins")
 	return p
@@ -111,6 +115,11 @@ func (p *Prove) Run(args []string) {
 
 	if p.version {
 		fmt.Printf("go-prove %s, %s built for %s/%s\n", Version, runtime.Version(), runtime.GOOS, runtime.GOARCH)
+		return
+	}
+
+	if p.help {
+		p.FlagSet.PrintDefaults()
 		return
 	}
 
