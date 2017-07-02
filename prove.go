@@ -22,8 +22,8 @@ type Prove struct {
 	Exec string
 
 	Formatter Formatter
-
-	Plugins []Plugin
+	Merge     bool
+	Plugins   []Plugin
 
 	chanTests  chan *Test
 	chanSuites chan *Test
@@ -79,6 +79,7 @@ func NewProve() *Prove {
 	p.FlagSet.BoolVar(&p.version, "version", false, "Show version of go-prove")
 	p.FlagSet.StringVar(&p.Exec, "e", "perl", "shorthand of -exec option")
 	p.FlagSet.StringVar(&p.Exec, "exec", "perl", "Interpreter to run the tests")
+	p.FlagSet.BoolVar(&p.Merge, "merge", false, "Merge test scripts' STDERR with their STDOUT")
 	sliceflag.StringVar(p.FlagSet, &p.pluginArgs, "plugin", []string{}, "plugins")
 	sliceflag.StringVar(p.FlagSet, &p.pluginArgs, "P", []string{}, "plugins")
 	return p
@@ -126,9 +127,10 @@ func (p *Prove) Run(args []string) {
 	go func() {
 		for _, path := range files {
 			p.chanTests <- &Test{
-				Path: path,
-				Env:  []string{},
-				Exec: p.Exec,
+				Path:  path,
+				Env:   []string{},
+				Exec:  p.Exec,
+				Merge: p.Merge,
 			}
 		}
 		close(p.chanTests)
