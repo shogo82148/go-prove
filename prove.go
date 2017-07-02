@@ -73,8 +73,8 @@ func NewProve() *Prove {
 		chanSuites: make(chan *Test),
 		wgWorkers:  &sync.WaitGroup{},
 	}
-	p.FlagSet.IntVar(&p.Jobs, "j", 1, "Run N test jobs in parallel")
-	p.FlagSet.IntVar(&p.Jobs, "job", 1, "Run N test jobs in parallel")
+	p.FlagSet.IntVar(&p.Jobs, "j", 1, "shorthand of -jobs option")
+	p.FlagSet.IntVar(&p.Jobs, "jobs", 1, "Run N test jobs in parallel")
 	p.FlagSet.BoolVar(&p.version, "version", false, "Show version of go-prove")
 	p.FlagSet.StringVar(&p.Exec, "exec", "perl", "")
 	sliceflag.StringVar(p.FlagSet, &p.pluginArgs, "plugin", []string{}, "plugins")
