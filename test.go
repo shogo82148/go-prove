@@ -40,15 +40,17 @@ func (t *Test) Run() *tap.Testsuite {
 		return t.Suite
 	}
 
-	ch := make(chan *tap.Testsuite)
+	ch := make(chan *tap.Testsuite, 1)
 	go func() {
 		parser, err := tap.NewParser(r)
 		if err != nil {
 			ch <- errorTestsuite(err)
+			return
 		}
 		suite, err := parser.Suite()
 		if err != nil {
 			ch <- errorTestsuite(err)
+			return
 		}
 		ch <- suite
 	}()
