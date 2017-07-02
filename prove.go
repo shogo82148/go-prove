@@ -75,6 +75,7 @@ func NewProve() *Prove {
 	}
 	p.FlagSet.IntVar(&p.Jobs, "j", 1, "shorthand of -jobs option")
 	p.FlagSet.IntVar(&p.Jobs, "jobs", 1, "Run N test jobs in parallel")
+	p.FlagSet.BoolVar(&p.version, "V", false, "shorthand of -version option")
 	p.FlagSet.BoolVar(&p.version, "version", false, "Show version of go-prove")
 	p.FlagSet.StringVar(&p.Exec, "e", "perl", "shorthand of -exec option")
 	p.FlagSet.StringVar(&p.Exec, "exec", "perl", "Interpreter to run the tests")
