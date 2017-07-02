@@ -10,9 +10,13 @@ import (
 )
 
 type Test struct {
-	Path  string
-	Env   []string
-	Exec  string
+	Path string
+	Env  []string
+	Exec string
+
+	// Merge test scripts' STDERR with their STDOUT.
+	Merge bool
+
 	Suite *tap.Testsuite
 }
 
@@ -21,37 +25,39 @@ func (t *Test) Run() *tap.Testsuite {
 	execParam = append(execParam, t.Path)
 	cmd := exec.Command(execParam[0], execParam[1:]...)
 	cmd.Env = t.Env
-	stdout, err := cmd.StdoutPipe()
-	if err != nil {
-		t.Suite = errorTestsuite(err)
-		return t.Suite
-	}
-	stderr, err := cmd.StderrPipe()
-	if err != nil {
-		t.Suite = errorTestsuite(err)
-		return t.Suite
-	}
 
-	err = cmd.Start()
-	if err != nil {
-		t.Suite = errorTestsuite(err)
-		return t.Suite
-	}
-	go io.Copy(os.Stderr, stderr)
+	r, w := io.Pipe()
+	cmd.Stdout = w
 
-	var suite *tap.Testsuite
-	parser, err := tap.NewParser(stdout)
-	if err != nil {
-		suite = errorTestsuite(err)
+	if t.Merge {
+		cmd.Stderr = w
 	} else {
-		suite, err = parser.Suite()
-		if err != nil {
-			suite = errorTestsuite(err)
-		}
+		cmd.Stderr = os.Stderr
 	}
+
+	if err := cmd.Start(); err != nil {
+		t.Suite = errorTestsuite(err)
+		return t.Suite
+	}
+
+	ch := make(chan *tap.Testsuite)
+	go func() {
+		parser, err := tap.NewParser(r)
+		if err != nil {
+			ch <- errorTestsuite(err)
+		}
+		suite, err := parser.Suite()
+		if err != nil {
+			ch <- errorTestsuite(err)
+		}
+		ch <- suite
+	}()
 
 	cmd.Wait()
+	w.Close()
+	r.Close()
 
+	suite := <-ch
 	t.Suite = suite
 	return suite
 }
