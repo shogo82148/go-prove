@@ -1,12 +1,11 @@
 package prove
 
 import (
+	"fmt"
 	"io"
 	"os"
 	"os/exec"
 	"syscall"
-
-	"fmt"
 
 	"github.com/mattn/go-shellwords"
 	"github.com/shogo82148/go-tap"
