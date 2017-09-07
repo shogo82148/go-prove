@@ -79,6 +79,7 @@ func (p *Harriet) start() error {
 }
 
 func (p *Harriet) Run(w *prove.Worker, f func()) {
+	w.Env = append(w.Env, p.env...)
 	f()
 }
 
