@@ -1,6 +1,7 @@
 package plugin
 
 import (
+	"io"
 	"os"
 	"os/exec"
 	"strings"
@@ -37,6 +38,7 @@ func TestHarriet(t *testing.T) {
 			t.Error("unexpected error: ", err)
 		}
 	})
+	h.(io.Closer).Close()
 
 	// testfile should be removed because harriet command has already finished.
 	if testfile == "" {

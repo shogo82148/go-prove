@@ -3,6 +3,7 @@ package prove
 import (
 	"flag"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -151,6 +152,13 @@ func (p *Prove) Run(args []string) {
 		p.Formatter.OpenTest(suite)
 	}
 	p.Formatter.Report()
+
+	// clean up plugins
+	for i := range p.Plugins {
+		if c, ok := p.Plugins[len(p.Plugins)-1-i].(io.Closer); ok {
+			c.Close()
+		}
+	}
 }
 
 // Find Test Files
