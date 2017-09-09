@@ -46,7 +46,7 @@ type Formatter interface {
 }
 
 type Plugin interface {
-	Run(w *Worker, f func())
+	Run(w *Worker)
 }
 
 type PluginLoader interface {

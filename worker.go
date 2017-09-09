@@ -38,9 +38,7 @@ func (w *Worker) run() {
 	}
 
 	for _, p := range w.prove.Plugins {
-		f = func(g func()) func() {
-			return func() { p.Run(w, g) }
-		}(f)
+		p.Run(w)
 	}
 
 	f()
