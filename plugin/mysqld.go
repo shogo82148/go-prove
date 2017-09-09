@@ -18,7 +18,7 @@ func init() {
 	}))
 }
 
-func (p *TestMysqld) Run(w *prove.Worker, f func()) {
+func (p *TestMysqld) Run(w *prove.Worker) {
 	log.Printf("run mysqld")
 	mysqld, err := mysqltest.NewMysqld(nil)
 	if err != nil {
@@ -28,6 +28,4 @@ func (p *TestMysqld) Run(w *prove.Worker, f func()) {
 
 	address := mysqld.ConnectString(0)
 	w.Env = append(w.Env, fmt.Sprintf("GO_PROVE_MYSQLD=%s", address))
-
-	f()
 }
