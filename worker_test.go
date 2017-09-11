@@ -30,13 +30,7 @@ func Test__run(t *testing.T) {
 		Exec: "perl",
 	}
 
-	pluginResChan = make(chan int, 4)
-	pluginRes := make([]int, 0, 4)
-	go func() {
-		for res := range pluginResChan {
-			pluginRes = append(pluginRes, res)
-		}
-	}()
+	pluginResChan = make(chan int, 5)
 
 	p := NewProve()
 	w := NewWorker(p)
@@ -54,6 +48,16 @@ func Test__run(t *testing.T) {
 	close(p.chanTests)
 	p.wgWorkers.Wait()
 
+	pluginRes := make([]int, 0, 4)
+OUTER:
+	for {
+		select {
+		case res := <-pluginResChan:
+			pluginRes = append(pluginRes, res)
+		default:
+			break OUTER
+		}
+	}
 	if !reflect.DeepEqual(pluginRes, []int{2, 1, 1, 2}) {
 		t.Errorf(
 			"plugin exec is not valid: got: %v, expect: [2 1 1 2]",
