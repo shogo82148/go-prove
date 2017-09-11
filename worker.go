@@ -34,7 +34,6 @@ func (w *Worker) run() {
 			w.prove.chanSuites <- test
 			log.Printf("finish %s", test.Path)
 		}
-		w.prove.wgWorkers.Done()
 	}
 
 	for _, p := range w.prove.Plugins {
@@ -46,4 +45,5 @@ func (w *Worker) run() {
 	}
 
 	f()
+	w.prove.wgWorkers.Done()
 }

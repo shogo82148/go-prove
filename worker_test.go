@@ -30,7 +30,7 @@ func Test__run(t *testing.T) {
 		Exec: "perl",
 	}
 
-	pluginResChan = make(chan int, 5)
+	pluginResChan = make(chan int, 4)
 
 	p := NewProve()
 	w := NewWorker(p)
@@ -47,16 +47,11 @@ func Test__run(t *testing.T) {
 	}()
 	close(p.chanTests)
 	p.wgWorkers.Wait()
+	close(pluginResChan)
 
 	pluginRes := make([]int, 0, 4)
-OUTER:
-	for {
-		select {
-		case res := <-pluginResChan:
-			pluginRes = append(pluginRes, res)
-		default:
-			break OUTER
-		}
+	for res := range pluginResChan {
+		pluginRes = append(pluginRes, res)
 	}
 	if !reflect.DeepEqual(pluginRes, []int{2, 1, 1, 2}) {
 		t.Errorf(
