@@ -130,7 +130,7 @@ func (p *Prove) Run(args []string) {
 		p.Jobs = 1
 	}
 	for i := 0; i < p.Jobs; i++ {
-		w := NewWorker(p)
+		w := NewWorker(p, i)
 		w.Start()
 	}
 

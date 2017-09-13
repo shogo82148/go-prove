@@ -1,6 +1,7 @@
 package prove
 
 import (
+	"fmt"
 	"log"
 	"os"
 )
@@ -10,10 +11,11 @@ type Worker struct {
 	Env   []string
 }
 
-func NewWorker(p *Prove) *Worker {
+func NewWorker(p *Prove, id int) *Worker {
+	env := append(os.Environ(), fmt.Sprintf("GO_PROVE_WORKER_ID=%d", id))
 	return &Worker{
 		prove: p,
-		Env:   os.Environ(),
+		Env:   env,
 	}
 }
 
