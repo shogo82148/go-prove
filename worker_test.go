@@ -33,7 +33,7 @@ func Test__run(t *testing.T) {
 	pluginResChan = make(chan int, 4)
 
 	p := NewProve()
-	w := NewWorker(p)
+	w := NewWorker(p, 0)
 	p.Plugins = []Plugin{
 		testPlugin(1),
 		testPlugin(2),
