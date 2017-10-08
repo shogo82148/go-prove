@@ -142,7 +142,7 @@ func (p *Prove) Run(args []string) {
 	switch p.formatter {
 	case "junit":
 		p.Formatter = &formatter.JUnitFormatter{}
-	case "prove":
+	case "tap":
 		fallthrough
 	case "":
 		p.Formatter = &formatter.TapFormatter{}
