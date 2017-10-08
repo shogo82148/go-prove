@@ -1,4 +1,4 @@
-package Formatter
+package formatter
 
 import (
 	"encoding/xml"
@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/shogo82148/go-prove"
+	"github.com/shogo82148/go-prove/test"
 	tap "github.com/shogo82148/go-tap"
 )
 
@@ -80,7 +80,7 @@ func (f *JUnitFormatter) formatDuration(d time.Duration) string {
 	return fmt.Sprintf("%.3f", d.Seconds())
 }
 
-func (f *JUnitFormatter) OpenTest(test *prove.Test) {
+func (f *JUnitFormatter) OpenTest(test *test.Test) {
 	className := strings.Replace(test.Path, "/", "_", -1)
 	className = strings.Replace(className, ".", "_", -1)
 

@@ -1,4 +1,4 @@
-package prove
+package test
 
 import (
 	"fmt"

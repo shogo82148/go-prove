@@ -10,6 +10,8 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/shogo82148/go-prove/formatter"
+	"github.com/shogo82148/go-prove/test"
 	"github.com/soh335/sliceflag"
 )
 
@@ -23,11 +25,13 @@ type Prove struct {
 	Exec string
 
 	Formatter Formatter
-	Merge     bool
-	Plugins   []Plugin
+	formatter string
 
-	chanTests  chan *Test
-	chanSuites chan *Test
+	Merge   bool
+	Plugins []Plugin
+
+	chanTests  chan *test.Test
+	chanSuites chan *test.Test
 	wgWorkers  *sync.WaitGroup
 	pluginArgs []string
 	version    bool
@@ -39,7 +43,7 @@ type Prove struct {
 
 type Formatter interface {
 	// Called to create a new test
-	OpenTest(test *Test)
+	OpenTest(test *test.Test)
 
 	// Prints the report after all tests are run
 	Report()
@@ -71,8 +75,8 @@ func NewProve() *Prove {
 		Mutex:      &sync.Mutex{},
 		ExitCode:   0,
 		Plugins:    []Plugin{},
-		chanTests:  make(chan *Test),
-		chanSuites: make(chan *Test),
+		chanTests:  make(chan *test.Test),
+		chanSuites: make(chan *test.Test),
 		wgWorkers:  &sync.WaitGroup{},
 	}
 	p.FlagSet.IntVar(&p.Jobs, "j", 1, "shorthand of -jobs option")
@@ -81,6 +85,7 @@ func NewProve() *Prove {
 	p.FlagSet.BoolVar(&p.version, "version", false, "Show version of go-prove")
 	p.FlagSet.StringVar(&p.Exec, "e", "perl", "shorthand of -exec option")
 	p.FlagSet.StringVar(&p.Exec, "exec", "perl", "Interpreter to run the tests")
+	p.FlagSet.StringVar(&p.formatter, "formatter", "", "Result formatter to use")
 	p.FlagSet.BoolVar(&p.Merge, "merge", false, "Merge test scripts' STDERR with their STDOUT")
 	p.FlagSet.BoolVar(&p.help, "h", false, "show this help")
 	p.FlagSet.BoolVar(&p.help, "help", false, "show this help")
@@ -134,9 +139,20 @@ func (p *Prove) Run(args []string) {
 		w.Start()
 	}
 
+	switch p.formatter {
+	case "junit":
+		p.Formatter = &formatter.JUnitFormatter{}
+	case "prove":
+		fallthrough
+	case "":
+		p.Formatter = &formatter.TapFormatter{}
+	default:
+		panic(fmt.Sprintf("unknown formatter: %s", p.formatter))
+	}
+
 	go func() {
 		for _, path := range files {
-			p.chanTests <- &Test{
+			p.chanTests <- &test.Test{
 				Path:  path,
 				Env:   []string{},
 				Exec:  p.Exec,
