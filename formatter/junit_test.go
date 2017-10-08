@@ -1,4 +1,4 @@
-package Formatter
+package formatter
 
 import (
 	"encoding/xml"
@@ -7,7 +7,7 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/shogo82148/go-prove"
+	"github.com/shogo82148/go-prove/test"
 )
 
 func TestJUnit_success(t *testing.T) {
@@ -17,7 +17,7 @@ func TestJUnit_success(t *testing.T) {
 	}
 	f.WriteString(`print "1..1\nok 1\n";`)
 
-	test := &prove.Test{
+	test := &test.Test{
 		Path: f.Name(),
 		Env:  os.Environ(),
 		Exec: "perl",
@@ -25,9 +25,9 @@ func TestJUnit_success(t *testing.T) {
 
 	test.Run()
 
-	formatter := &JUnitFormatter{}
-	formatter.OpenTest(test)
-	b, _ := xml.MarshalIndent(formatter.Suites, "", "")
+	fmtter := &JUnitFormatter{}
+	fmtter.OpenTest(test)
+	b, _ := xml.MarshalIndent(fmtter.Suites, "", "")
 	re := `^<testsuites><testsuite tests="1" failures="0" errors="0" skipped="0" time="0.[0-9]+" name="[^"]+">` +
 		`<properties></properties><testcase classname="[^"]+" name="" time="0.[0-9]+">` +
 		`<system-out><!\[CDATA\[ok 1` + "\n" +
@@ -48,7 +48,7 @@ func TestJUnit_fail(t *testing.T) {
 	}
 	f.WriteString(`print "1..1\nnot ok 1\n";`)
 
-	test := &prove.Test{
+	test := &test.Test{
 		Path: f.Name(),
 		Env:  os.Environ(),
 		Exec: "perl",
@@ -56,9 +56,9 @@ func TestJUnit_fail(t *testing.T) {
 
 	test.Run()
 
-	formatter := &JUnitFormatter{}
-	formatter.OpenTest(test)
-	b, _ := xml.MarshalIndent(formatter.Suites, "", "")
+	fmtter := &JUnitFormatter{}
+	fmtter.OpenTest(test)
+	b, _ := xml.MarshalIndent(fmtter.Suites, "", "")
 	re := `^<testsuites><testsuite tests="1" failures="1" errors="0" skipped="0" time="0.[0-9]+" name="[^"]+">` +
 		`<properties></properties><testcase classname="[^"]+" name="" time="0.[0-9]+">` +
 		`<failure message="not ok 1" type="TestFailed"></failure>` +
@@ -80,7 +80,7 @@ func TestJUnit_failplan(t *testing.T) {
 	}
 	f.WriteString(`print "1..2\nok 1\n";`)
 
-	test := &prove.Test{
+	test := &test.Test{
 		Path: f.Name(),
 		Env:  os.Environ(),
 		Exec: "perl",
@@ -88,9 +88,9 @@ func TestJUnit_failplan(t *testing.T) {
 
 	test.Run()
 
-	formatter := &JUnitFormatter{}
-	formatter.OpenTest(test)
-	b, _ := xml.MarshalIndent(formatter.Suites, "", "")
+	fmtter := &JUnitFormatter{}
+	fmtter.OpenTest(test)
+	b, _ := xml.MarshalIndent(fmtter.Suites, "", "")
 	re := `^<testsuites><testsuite tests="1" failures="0" errors="1" skipped="0" time="0.[0-9]+" name="[^"]+">` +
 		`<properties></properties>` +
 		`<testcase classname="[^"]+" name="" time="0.[0-9]+"><system-out><!\[CDATA\[ok 1` + "\n" + `\]\]></system-out></testcase>` // +

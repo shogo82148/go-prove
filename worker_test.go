@@ -5,6 +5,8 @@ import (
 	"os"
 	"reflect"
 	"testing"
+
+	"github.com/shogo82148/go-prove/test"
 )
 
 type testPlugin int
@@ -24,7 +26,7 @@ func Test__run(t *testing.T) {
 	}
 	f.WriteString(`print "1..1\nok 1\n";`)
 
-	test := &Test{
+	test := &test.Test{
 		Path: f.Name(),
 		Env:  os.Environ(),
 		Exec: "perl",
