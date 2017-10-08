@@ -35,7 +35,7 @@
   branch = "master"
   name = "github.com/shogo82148/go-tap"
   packages = ["."]
-  revision = "6b56a8e590006df7809a030bd4cdce16b894c4c4"
+  revision = "2b63f1efc5294fe175b166032d8d5a07c1bdf989"
 
 [[projects]]
   branch = "master"
