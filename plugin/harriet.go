@@ -25,7 +25,7 @@ func init() {
 
 func harrietLoader(name, args string) prove.Plugin {
 	cmd := "harriet"
-	cmdArgs := []string{"t/harriet"}
+	cmdArgs := []string{"./t/harriet"}
 
 	a, _ := shellwords.Parse(args)
 	if len(a) > 0 {
