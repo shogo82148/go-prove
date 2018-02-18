@@ -18,7 +18,7 @@ func TestHarriet(t *testing.T) {
 	}
 
 	w := prove.NewWorker(nil, 0)
-	h := harrietLoader("harriet", "harriet _harriet_test")
+	h := harrietLoader("harriet", "harriet ./_harriet_test")
 
 	testfile := ""
 	h.Run(w, func() {
