@@ -105,3 +105,38 @@ func TestJUnit_failplan(t *testing.T) {
 		t.Errorf("incorrect output\n%s", string(b))
 	}
 }
+
+
+func TestJUnit_onlyFailed(t *testing.T) {
+	f, err := ioutil.TempFile("", "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	f.WriteString(`print "1..2\nok 1\nnot ok 2\n";`)
+
+	test := &test.Test{
+		Path: f.Name(),
+		Env:  os.Environ(),
+		Exec: "perl",
+	}
+
+	test.Run()
+
+	fmtter := &JUnitFormatter{OnlyFailed: true}
+	fmtter.OpenTest(test)
+	b, _ := xml.MarshalIndent(fmtter.Suites, "", "")
+
+	re := `^<testsuites><testsuite tests="2" failures="1" errors="0" skipped="0" time="0.[0-9]+" name="[^"]+">` +
+		`<properties><\/properties><testcase classname="[^"]+" name="" time="0.[0-9]+">` +
+		`<failure message="not ok 2" type="TestFailed"></failure>` +
+		`<system-out><!\[CDATA\[not ok 2` + "\n" +
+		`\]\]></system-out></testcase></testsuite></testsuites>$`
+
+	ok, err := regexp.Match(re, b)
+	if err != nil {
+		t.Error(err)
+	}
+	if !ok {
+		t.Errorf("incorrect output\n%s", string(b))
+	}
+}
