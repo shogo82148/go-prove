@@ -27,6 +27,8 @@ type Prove struct {
 	Formatter Formatter
 	formatter string
 
+	onlyFailed bool
+
 	Merge   bool
 	Plugins []Plugin
 
@@ -86,6 +88,7 @@ func NewProve() *Prove {
 	p.FlagSet.StringVar(&p.Exec, "e", "perl", "shorthand of -exec option")
 	p.FlagSet.StringVar(&p.Exec, "exec", "perl", "Interpreter to run the tests")
 	p.FlagSet.StringVar(&p.formatter, "formatter", "", "Result formatter to use")
+	p.FlagSet.BoolVar(&p.onlyFailed, "onlyFailed", false, "Only failed tests are output")
 	p.FlagSet.BoolVar(&p.Merge, "merge", false, "Merge test scripts' STDERR with their STDOUT")
 	p.FlagSet.BoolVar(&p.help, "h", false, "show this help")
 	p.FlagSet.BoolVar(&p.help, "help", false, "show this help")
@@ -141,7 +144,7 @@ func (p *Prove) Run(args []string) {
 
 	switch p.formatter {
 	case "junit":
-		p.Formatter = &formatter.JUnitFormatter{}
+		p.Formatter = &formatter.JUnitFormatter{OnlyFailed: p.onlyFailed}
 	case "tap":
 		fallthrough
 	case "":

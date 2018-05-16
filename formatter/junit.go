@@ -13,7 +13,8 @@ import (
 )
 
 type JUnitFormatter struct {
-	Suites JUnitTestSuites
+	Suites     JUnitTestSuites
+	OnlyFailed bool
 }
 
 // JUnitTestSuites is a collection of JUnit test suites.
@@ -115,7 +116,9 @@ func (f *JUnitFormatter) OpenTest(test *test.Test) {
 			}
 		}
 		ts.Tests++
-		ts.TestCases = append(ts.TestCases, testCase)
+		if !line.Ok || !f.OnlyFailed {
+			ts.TestCases = append(ts.TestCases, testCase)
+		}
 	}
 
 	if suite.Plan < 0 {
