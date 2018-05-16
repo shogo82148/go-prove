@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/shogo82148/go-prove/test"
-	tap "github.com/shogo82148/go-tap"
+	"github.com/shogo82148/go-tap"
 )
 
 type JUnitFormatter struct {
