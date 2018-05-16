@@ -1,3 +1,3 @@
 package prove
 
-const Version string = "0.2.1"
+const Version string = "0.3.0"
