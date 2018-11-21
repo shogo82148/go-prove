@@ -2,50 +2,69 @@
 
 
 [[projects]]
+  digest = "1:24f8932912fd9331367d38715bb74be889dc2f94d401109c3aa3db8b3aa246c5"
   name = "github.com/go-sql-driver/mysql"
   packages = ["."]
+  pruneopts = ""
   revision = "a0583e0143b1624142adab07e0e97fe106d99561"
   version = "v1.3"
 
 [[projects]]
   branch = "master"
+  digest = "1:9688ec5bdac282bc2f71f6474f3fe0b9b454468d18638c3ff7eda2ec21fc51dc"
   name = "github.com/lestrrat/go-tcputil"
   packages = ["."]
+  pruneopts = ""
   revision = "3cae7c8432aeb817399f001e0db3f5bb04e8b8a6"
 
 [[projects]]
   branch = "master"
+  digest = "1:990bd8709cd13bfd78ad7c2ffa56f40bb464ef76d9a4e98449cf11567d4f40f9"
   name = "github.com/lestrrat/go-test-mysqld"
   packages = ["."]
+  pruneopts = ""
   revision = "efcad5e3def274f89483d96eec81e48f683ecd6e"
 
 [[projects]]
+  digest = "1:477cce5379198d3b8230b5c0961c61fcd1b337371cda81318e89a109245d83cb"
   name = "github.com/mattn/go-shellwords"
   packages = ["."]
+  pruneopts = ""
   revision = "02e3cf038dcea8290e44424da473dd12be796a8a"
   version = "v1.0.3"
 
 [[projects]]
+  digest = "1:7365acd48986e205ccb8652cc746f09c8b7876030d53710ea6ef7d0bd0dcd7ca"
   name = "github.com/pkg/errors"
   packages = ["."]
+  pruneopts = ""
   revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
   version = "v0.8.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:d7863f1e745a7767777d0639219b0ebc81e3b47eb3ea92b302f93e5a4719ba37"
   name = "github.com/shogo82148/go-tap"
   packages = ["."]
+  pruneopts = ""
   revision = "2b63f1efc5294fe175b166032d8d5a07c1bdf989"
 
 [[projects]]
   branch = "master"
+  digest = "1:5e4f2981d0dace2f051c6e69ce00c94ee5afa30f0b157250b58059622382f17f"
   name = "github.com/soh335/sliceflag"
   packages = ["."]
+  pruneopts = ""
   revision = "d2d28a5acab8b2ad159a74b65288bf1218e43340"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "ece4969464acaac73dfd267e3530ecb2caa1e8584c0b90818009207ea95e36a2"
+  input-imports = [
+    "github.com/lestrrat/go-test-mysqld",
+    "github.com/mattn/go-shellwords",
+    "github.com/shogo82148/go-tap",
+    "github.com/soh335/sliceflag",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1

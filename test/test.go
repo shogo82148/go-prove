@@ -1,6 +1,7 @@
 package test
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -44,6 +45,8 @@ func (t *Test) Run() *tap.Testsuite {
 
 	ch := make(chan *tap.Testsuite, 1)
 	go func() {
+		defer r.Close()
+		defer close(ch)
 		parser, err := tap.NewParser(r)
 		if err != nil {
 			ch <- errorTestsuite(err)
@@ -59,9 +62,11 @@ func (t *Test) Run() *tap.Testsuite {
 
 	err := cmd.Wait()
 	w.Close()
-	r.Close()
 
-	suite := <-ch
+	suite, ok := <-ch
+	if !ok {
+		return errorTestsuite(errors.New("empty test result"))
+	}
 	t.Suite = suite
 
 	// check exit code
