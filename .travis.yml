@@ -6,5 +6,4 @@ go:
   - '1.12.x'
   - 'tip'
 sudo: false
-install: make installdeps
 script: make test
