@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/lestrrat/go-test-mysqld"
+	"github.com/lestrrat-go/test-mysqld"
 	"github.com/shogo82148/go-prove"
 )
 
