@@ -2,11 +2,10 @@ GOVERSION=$(shell go version)
 GOOS=$(shell go env GOOS)
 GOARCH=$(shell go env GOARCH)
 VERSION=$(patsubst "%",%,$(lastword $(shell grep 'const Version' version.go)))
-ARTIFACTS_DIR=$(CURDIR)/artifacts/$(VERSION)
-RELEASE_DIR=$(CURDIR)/release/$(VERSION)
+ARTIFACTS_DIR=./artifacts/$(VERSION)
+RELEASE_DIR=./release/$(VERSION)
 SRC_FILES = $(wildcard *.go cli/go-prove/*.go formatter/*.go plugin/*.go)
 GITHUB_USERNAME=shogo82148
-ARCHIVER=$(CURDIR)/archiver-$(shell go env GOOS)-$(shell go env GOARCH)/archiver
 
 .PHONY: all test clean
 
@@ -21,7 +20,7 @@ $(ARTIFACTS_DIR)/go-prove_$(GOOS)_$(GOARCH):
 
 $(ARTIFACTS_DIR)/go-prove_$(GOOS)_$(GOARCH)/go-prove$(SUFFIX): $(ARTIFACTS_DIR)/go-prove_$(GOOS)_$(GOARCH) $(SRC_FILES)
 	@echo " * Building binary for $(GOOS)/$(GOARCH)..."
-	@CGO_ENABLED=0 go build -o $@ cli/go-prove/main.go
+	@./run-in-docker.sh go build -o $@ cli/go-prove/main.go
 
 build: $(ARTIFACTS_DIR)/go-prove_$(GOOS)_$(GOARCH)/go-prove$(SUFFIX)
 
@@ -75,7 +74,7 @@ release-targz: build $(RELEASE_DIR)/go-prove_$(GOOS)_$(GOARCH)
 
 release-zip: build $(RELEASE_DIR)/go-prove_$(GOOS)_$(GOARCH)
 	@echo " * Creating zip for $(GOOS)/$(GOARCH)"
-	cd $(ARTIFACTS_DIR) && zip -9 $(RELEASE_DIR)/go-prove_$(GOOS)_$(GOARCH).zip go-prove_$(GOOS)_$(GOARCH)/*
+	cd $(ARTIFACTS_DIR) && zip -9 ../$(RELEASE_DIR)/go-prove_$(GOOS)_$(GOARCH).zip go-prove_$(GOOS)_$(GOARCH)/*
 
 release-files: release-windows-386 release-windows-amd64 release-linux-386 release-linux-amd64 release-darwin-386 release-darwin-amd64
 
@@ -92,4 +91,6 @@ test:
 	go vet ./...
 
 clean:
-	-rm -rf vendor
+	-rm -rf artifacts
+	-rm -rf release
+	-rm -rf .mod
