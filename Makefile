@@ -74,7 +74,7 @@ release-targz: build $(RELEASE_DIR)/go-prove_$(GOOS)_$(GOARCH)
 
 release-zip: build $(RELEASE_DIR)/go-prove_$(GOOS)_$(GOARCH)
 	@echo " * Creating zip for $(GOOS)/$(GOARCH)"
-	cd $(ARTIFACTS_DIR) && zip -9 ../$(RELEASE_DIR)/go-prove_$(GOOS)_$(GOARCH).zip go-prove_$(GOOS)_$(GOARCH)/*
+	cd $(ARTIFACTS_DIR) && zip -9 ../../$(RELEASE_DIR)/go-prove_$(GOOS)_$(GOARCH).zip go-prove_$(GOOS)_$(GOARCH)/*
 
 release-files: release-windows-386 release-windows-amd64 release-linux-386 release-linux-amd64 release-darwin-386 release-darwin-amd64
 
