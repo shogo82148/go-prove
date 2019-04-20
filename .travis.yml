@@ -1,8 +1,9 @@
 language: go
+env:
+  - GO111MODULE=on
 go:
-- '1.9.x'
-- '1.10.x'
-- 'tip'
+  - '1.11.x'
+  - '1.12.x'
+  - 'tip'
 sudo: false
-install: make installdeps
 script: make test
