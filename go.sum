@@ -1,0 +1,14 @@
+github.com/go-sql-driver/mysql v1.3.0 h1:pgwjLi/dvffoP9aabwkT3AKpXQM93QARkjFhDDqC1UE=
+github.com/go-sql-driver/mysql v1.3.0/go.mod h1:zAC/RDZ24gD3HViQzih4MyKcchzm+sOG5ZlKdlhCg5w=
+github.com/lestrrat/go-tcputil v0.0.0-20140425055951-3cae7c8432ae h1:0GGdZUsFNdeMk7ctFOInUzhQmwGsWLGC+y2BlHCXS+U=
+github.com/lestrrat/go-tcputil v0.0.0-20140425055951-3cae7c8432ae/go.mod h1:B+/nnJuKL4WcXSYfHy1SqQeHbl58EeOVNOJvXmtgi+k=
+github.com/lestrrat/go-test-mysqld v0.0.0-20161118000117-efcad5e3def2 h1:O472JmjeCqnUm2s9OCxtHqOQnUB8+eNFT6vcoOBWR7Y=
+github.com/lestrrat/go-test-mysqld v0.0.0-20161118000117-efcad5e3def2/go.mod h1:NAqKFxaMS3CljQDZCh03ksMJJYbOG3o1XoFJZduxsI8=
+github.com/mattn/go-shellwords v1.0.3 h1:K/VxK7SZ+cvuPgFSLKi5QPI9Vr/ipOf4C1gN+ntueUk=
+github.com/mattn/go-shellwords v1.0.3/go.mod h1:3xCvwCdWdlDJUrvuMn7Wuy9eWs4pE8vqg+NOMyg4B2o=
+github.com/pkg/errors v0.8.0 h1:WdK/asTD0HN+q6hsWO3/vpuAkAr+tw6aNJNDFFf0+qw=
+github.com/pkg/errors v0.8.0/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
+github.com/shogo82148/go-tap v0.0.0-20171008024943-2b63f1efc529 h1:QAAaf3Sr5Gb1z3Cvym0Y1IhPzF04PD5X1LOvDZIF8HM=
+github.com/shogo82148/go-tap v0.0.0-20171008024943-2b63f1efc529/go.mod h1:qGl8iCKJTDTvtdIuciMDwlNvHgGuzqTj9a/147D62+Q=
+github.com/soh335/sliceflag v0.0.0-20160923061056-d2d28a5acab8 h1:Rj9gnP5z34qqbzRWW/NPFAkUi2fSG0efbp6iV23n1Ck=
+github.com/soh335/sliceflag v0.0.0-20160923061056-d2d28a5acab8/go.mod h1:d7KDaisiM/NC1Ofz8GkK7K4+5dZcpOauAfGO8+mpXpc=
