@@ -39,8 +39,8 @@ build-linux-386:
 build-darwin-amd64:
 	@$(MAKE) build GOOS=darwin GOARCH=amd64
 
-build-darwin-386:
-	@$(MAKE) build GOOS=darwin GOARCH=386
+build-darwin-arm64:
+	@$(MAKE) build GOOS=darwin GOARCH=arm64
 
 ##### release settings
 
@@ -65,9 +65,6 @@ release-linux-386:
 release-darwin-amd64:
 	@$(MAKE) release-zip GOOS=darwin GOARCH=amd64
 
-release-darwin-386:
-	@$(MAKE) release-zip GOOS=darwin GOARCH=386
-
 release-targz: build $(RELEASE_DIR)/go-prove_$(GOOS)_$(GOARCH)
 	@echo " * Creating tar.gz for $(GOOS)/$(GOARCH)"
 	tar -czf $(RELEASE_DIR)/go-prove_$(GOOS)_$(GOARCH).tar.gz -C $(ARTIFACTS_DIR) go-prove_$(GOOS)_$(GOARCH)
@@ -76,7 +73,7 @@ release-zip: build $(RELEASE_DIR)/go-prove_$(GOOS)_$(GOARCH)
 	@echo " * Creating zip for $(GOOS)/$(GOARCH)"
 	cd $(ARTIFACTS_DIR) && zip -9 ../../$(RELEASE_DIR)/go-prove_$(GOOS)_$(GOARCH).zip go-prove_$(GOOS)_$(GOARCH)/*
 
-release-files: release-windows-386 release-windows-amd64 release-linux-386 release-linux-amd64 release-darwin-386 release-darwin-amd64
+release-files: release-windows-386 release-windows-amd64 release-linux-386 release-linux-amd64 release-darwin-amd64
 
 release-upload: release-files
 	ghr -u $(GITHUB_USERNAME) --draft --replace v$(VERSION) $(RELEASE_DIR)
