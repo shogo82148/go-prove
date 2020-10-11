@@ -9,7 +9,7 @@ require (
 	github.com/lestrrat-go/test-mysqld v0.0.0-20190527004737-6c91be710371
 	github.com/mattn/go-shellwords v1.0.10
 	github.com/pkg/errors v0.9.1 // indirect
-	github.com/shogo82148/go-tap v0.0.1
+	github.com/shogo82148/go-tap v0.0.2
 	github.com/soh335/sliceflag v0.0.0-20160923061056-d2d28a5acab8
 	github.com/stretchr/testify v1.6.1 // indirect
 )
