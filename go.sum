@@ -8,8 +8,8 @@ github.com/lestrrat-go/tcputil v0.0.0-20180223003554-d3c7f98154fb h1:sb9NxqWoS17
 github.com/lestrrat-go/tcputil v0.0.0-20180223003554-d3c7f98154fb/go.mod h1:bBamYL9/WjNn0b2CS4v4F8cHmWRpClSxrpEoAY+maJo=
 github.com/lestrrat-go/test-mysqld v0.0.0-20190527004737-6c91be710371 h1:3krMZFzgjxQciWgQxfaj4wd1zKsnis7MRg52/Do9btk=
 github.com/lestrrat-go/test-mysqld v0.0.0-20190527004737-6c91be710371/go.mod h1:nNdGDcaEskqrh833et3XzSkflbxqVuf5OBX4S/ho/CM=
-github.com/mattn/go-shellwords v1.0.10 h1:Y7Xqm8piKOO3v10Thp7Z36h4FYFjt5xB//6XvOrs2Gw=
-github.com/mattn/go-shellwords v1.0.10/go.mod h1:EZzvwXDESEeg03EKmM+RmDnNOPKG4lLtQsUlTZDWQ8Y=
+github.com/mattn/go-shellwords v1.0.11 h1:vCoR9VPpsk/TZFW2JwK5I9S0xdrtUq2bph6/YjEPnaw=
+github.com/mattn/go-shellwords v1.0.11/go.mod h1:EZzvwXDESEeg03EKmM+RmDnNOPKG4lLtQsUlTZDWQ8Y=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
