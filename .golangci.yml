@@ -4,6 +4,8 @@ run:
   timeout: 5m
 
 issues:
+  exclude-use-default: false
+
   # reviewdog limits max issues, so we don't do here.
   max-issues-per-linter: 0
   max-same-issues: 0
