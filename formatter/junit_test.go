@@ -28,7 +28,7 @@ func TestJUnit_success(t *testing.T) {
 	fmtter := &JUnitFormatter{}
 	fmtter.OpenTest(test)
 	b, _ := xml.MarshalIndent(fmtter.Suites, "", "")
-	re := `^<testsuites><testsuite tests="1" failures="0" errors="0" skipped="0" time="0.[0-9]+" name="[^"]+">` +
+	re := `^<testsuites><testsuite tests="1" failures="0" errors="0" skipped="0" time="[0-9]+.[0-9]+" name="[^"]+">` +
 		`<properties></properties><testcase classname="[^"]+" name="" time="[0-9]+.[0-9]+">` +
 		`<system-out><!\[CDATA\[ok 1` + "\n" +
 		`\]\]></system-out></testcase></testsuite></testsuites>$`
