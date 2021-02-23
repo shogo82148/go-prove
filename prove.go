@@ -180,7 +180,7 @@ func (p *Prove) Run(args []string) {
 	}
 }
 
-// Find Test Files
+// FindTestFiles lists test files.
 func (p *Prove) FindTestFiles() []string {
 	files := []string{}
 	if p.FlagSet.NArg() == 0 {
@@ -194,7 +194,10 @@ func (p *Prove) FindTestFiles() []string {
 }
 
 func (p *Prove) findTestFiles(files []string, parent string) []string {
-	stat, _ := os.Stat(parent)
+	stat, err := os.Stat(parent)
+	if err != nil {
+		return files
+	}
 	if !stat.IsDir() {
 		return append(files, parent)
 	}
