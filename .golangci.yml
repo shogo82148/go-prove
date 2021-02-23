@@ -1,0 +1,14 @@
+# https://golangci-lint.run/usage/configuration/
+
+run:
+  timeout: 5m
+
+issues:
+  # reviewdog limits max issues, so we don't do here.
+  max-issues-per-linter: 0
+  max-same-issues: 0
+
+linters:
+  enable:
+    - golint
+    - misspell
