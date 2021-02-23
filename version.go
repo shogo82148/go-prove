@@ -1,3 +1,5 @@
 package prove
 
-const Version string = "0.3.3"
+// these variable is set by goreleaser
+var version string = "main" // .Version
+var commit string = "HEAD"  // .ShortCommit
