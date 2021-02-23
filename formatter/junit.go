@@ -72,7 +72,7 @@ type JUnitSystemOut struct {
 	Contents string `xml:",cdata"`
 }
 
-// JunitSystemErr contains the standard error.
+// JunitSystemErr contains the standard error. FIXME!
 type JUnitSystemErr struct {
 	Contents string `xml:",cdata"`
 }
