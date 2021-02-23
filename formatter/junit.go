@@ -12,6 +12,7 @@ import (
 	"github.com/shogo82148/go-tap"
 )
 
+// JUnitFormatter is a formatter for JUnit XML.
 type JUnitFormatter struct {
 	Suites     JUnitTestSuites
 	OnlyFailed bool
@@ -72,7 +73,7 @@ type JUnitSystemOut struct {
 	Contents string `xml:",cdata"`
 }
 
-// JunitSystemErr contains the standard error.
+// JUnitSystemErr contains the standard error.
 type JUnitSystemErr struct {
 	Contents string `xml:",cdata"`
 }
@@ -81,6 +82,7 @@ func (f *JUnitFormatter) formatDuration(d time.Duration) string {
 	return fmt.Sprintf("%.3f", d.Seconds())
 }
 
+// OpenTest implements prove.Formatter
 func (f *JUnitFormatter) OpenTest(test *test.Test) {
 	className := strings.Replace(test.Path, "/", "_", -1)
 	className = strings.Replace(className, ".", "_", -1)
@@ -152,6 +154,7 @@ func (f *JUnitFormatter) OpenTest(test *test.Test) {
 	f.Suites.Suites = append(f.Suites.Suites, ts)
 }
 
+// Report implements prove.Formatter
 func (f *JUnitFormatter) Report() {
 	out := os.Stdout
 	io.WriteString(out, xml.Header)
