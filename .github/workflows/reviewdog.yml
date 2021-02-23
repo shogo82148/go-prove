@@ -11,7 +11,7 @@ jobs:
       - name: golangci-lint
         uses: reviewdog/action-golangci-lint@v1
         with:
-          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-review
           level: warning
 
   misspell:
@@ -23,7 +23,7 @@ jobs:
       - name: misspell
         uses: reviewdog/action-misspell@v1
         with:
-          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-review
           locale: "US"
 
   shellcheck:
@@ -35,7 +35,7 @@ jobs:
       - name: shellcheck
         uses: reviewdog/action-shellcheck@v1
         with:
-          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-review
           path: "."
           pattern: "*.sh"
           exclude: "./.git/*"
