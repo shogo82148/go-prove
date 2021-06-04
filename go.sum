@@ -7,8 +7,8 @@ github.com/lestrrat-go/tcputil v0.0.0-20180223003554-d3c7f98154fb h1:sb9NxqWoS17
 github.com/lestrrat-go/tcputil v0.0.0-20180223003554-d3c7f98154fb/go.mod h1:bBamYL9/WjNn0b2CS4v4F8cHmWRpClSxrpEoAY+maJo=
 github.com/lestrrat-go/test-mysqld v0.0.0-20190527004737-6c91be710371 h1:3krMZFzgjxQciWgQxfaj4wd1zKsnis7MRg52/Do9btk=
 github.com/lestrrat-go/test-mysqld v0.0.0-20190527004737-6c91be710371/go.mod h1:nNdGDcaEskqrh833et3XzSkflbxqVuf5OBX4S/ho/CM=
-github.com/mattn/go-shellwords v1.0.11 h1:vCoR9VPpsk/TZFW2JwK5I9S0xdrtUq2bph6/YjEPnaw=
-github.com/mattn/go-shellwords v1.0.11/go.mod h1:EZzvwXDESEeg03EKmM+RmDnNOPKG4lLtQsUlTZDWQ8Y=
+github.com/mattn/go-shellwords v1.0.12 h1:M2zGm7EW6UQJvDeQxo4T51eKPurbeFbe8WtebGE2xrk=
+github.com/mattn/go-shellwords v1.0.12/go.mod h1:EZzvwXDESEeg03EKmM+RmDnNOPKG4lLtQsUlTZDWQ8Y=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
@@ -17,11 +17,9 @@ github.com/shogo82148/go-tap v0.0.3 h1:i3RzbsucWz9caoWS0wFAmJGEU0hwCsWmuK9kYGPoa
 github.com/shogo82148/go-tap v0.0.3/go.mod h1:H6vRVOZ2uqX/Epmer6MnielLhU3ybUIPm6P3G4zGf5E=
 github.com/soh335/sliceflag v0.0.0-20160923061056-d2d28a5acab8 h1:Rj9gnP5z34qqbzRWW/NPFAkUi2fSG0efbp6iV23n1Ck=
 github.com/soh335/sliceflag v0.0.0-20160923061056-d2d28a5acab8/go.mod h1:d7KDaisiM/NC1Ofz8GkK7K4+5dZcpOauAfGO8+mpXpc=
-github.com/stretchr/objx v0.1.0 h1:4G4v2dO3VZwixGIRoQ5Lfboy6nUhCyYzaqnIAPPhYs4=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.6.1 h1:hDPOHmpOpP40lSULcqw7IrRb/u7w6RpDC9399XyoNd0=
 github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
-gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c h1:dUUwHk2QECo/6vqA44rthZ8ie2QXMNeKRTHCNY2nXvo=
 gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
