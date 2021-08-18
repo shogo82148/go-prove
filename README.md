@@ -6,7 +6,7 @@ Go-lang implementation of perl [prove](http://perldoc.perl.org/prove.html)
 ## INSTALL
 
 ``` bash
-go get github.com/shogo82148/go-prove/cli/go-prove
+go install github.com/shogo82148/go-prove/cli/go-prove@latest
 ```
 
 ## USAGE
