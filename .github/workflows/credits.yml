@@ -25,3 +25,6 @@ jobs:
         run: make CREDITS
       - name: commit and create a pull request
         uses: shogo82148/actions-commit-and-create-pr@v1
+        with:
+          commit-message: Update CREDITS
+          title: Update CREDITS
