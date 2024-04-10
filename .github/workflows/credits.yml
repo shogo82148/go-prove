@@ -1,0 +1,27 @@
+name: credits
+
+on:
+  push:
+    paths:
+      - "go.mod"
+      - "go.sum"
+      - ".github/workflows/credits.yml"
+  workflow_dispatch:
+
+jobs:
+  credits:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: install gocredits
+        run: go install github.com/Songmu/gocredits/cmd/gocredits@latest
+
+      - name: Run gocredits
+        run: make CREDITS
+      - name: commit and create a pull request
+        uses: shogo82148/actions-commit-and-create-pr@v1
