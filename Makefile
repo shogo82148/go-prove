@@ -7,7 +7,7 @@ test:
 
 .PHONY: snapshot
 snapshot:
-	goreleaser --snapshot --skip-publish --rm-dist
+	goreleaser --snapshot --skip=publish --clean
 
 .PHONY: clean
 clean:
