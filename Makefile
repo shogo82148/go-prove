@@ -12,3 +12,7 @@ snapshot:
 .PHONY: clean
 clean:
 	-rm -rf dist
+
+# generate CREDITS file by using https://github.com/Songmu/gocredits
+CREDITS: go.mod go.sum
+	gocredits . > CREDITS
