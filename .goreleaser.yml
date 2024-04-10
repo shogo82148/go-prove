@@ -24,6 +24,9 @@ checksum:
 archives:
   - builds:
       - "cli"
+    files:
+      - CREDITS
+      - LICENSE
     name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     wrap_in_directory: true
     format_overrides:
