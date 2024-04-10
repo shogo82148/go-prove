@@ -1,8 +1,8 @@
 package prove
 
 import (
-	"io/ioutil"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -20,14 +20,14 @@ func (p testPlugin) Run(w *Worker, f func()) {
 }
 
 func Test__run(t *testing.T) {
-	f, err := ioutil.TempFile("", "")
-	if err != nil {
+	dir := t.TempDir()
+	filename := filepath.Join(dir, "foo.t")
+	if err := os.WriteFile(filename, []byte(`print "1..1\nok 1\n";`), 0644); err != nil {
 		t.Fatal(err)
 	}
-	f.WriteString(`print "1..1\nok 1\n";`)
 
 	test := &test.Test{
-		Path: f.Name(),
+		Path: filename,
 		Env:  os.Environ(),
 		Exec: "perl",
 	}

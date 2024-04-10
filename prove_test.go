@@ -1,7 +1,6 @@
 package prove
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -23,18 +22,13 @@ func TestParseArgs(t *testing.T) {
 
 func TestFindTestFiles(t *testing.T) {
 	// create dummy test files
-	dir, err := ioutil.TempDir("", "")
-	if err != nil {
-		t.Error(err)
-	}
-	//	defer os.RemoveAll(dir)
-	ioutil.WriteFile(filepath.Join(dir, "foo.t"), []byte{}, 0644)
-	ioutil.WriteFile(filepath.Join(dir, "foo.pl"), []byte{}, 0644)
+	dir := t.TempDir()
+	os.WriteFile(filepath.Join(dir, "foo.t"), []byte{}, 0644)
+	os.WriteFile(filepath.Join(dir, "foo.pl"), []byte{}, 0644)
 	os.MkdirAll(filepath.Join(dir, "foo", "bar"), 0777)
-	ioutil.WriteFile(filepath.Join(dir, "foo", "bar", "foo.t"), []byte{}, 0644)
+	os.WriteFile(filepath.Join(dir, "foo", "bar", "foo.t"), []byte{}, 0644)
 
-	// pass directory name
-	{
+	t.Run("pass directory name", func(t *testing.T) {
 		p := NewProve()
 		p.ParseArgs([]string{dir})
 		testFiles := p.FindTestFiles()
@@ -44,10 +38,11 @@ func TestFindTestFiles(t *testing.T) {
 		if !reflect.DeepEqual(testFiles, expected) {
 			t.Errorf("want %v\ngot %v", expected, testFiles)
 		}
-	}
+
+	})
 
 	// pass file name
-	{
+	t.Run("pass file name", func(t *testing.T) {
 		p := NewProve()
 		p.ParseArgs([]string{filepath.Join(dir, "foo.t")})
 		testFiles := p.FindTestFiles()
@@ -55,5 +50,5 @@ func TestFindTestFiles(t *testing.T) {
 		if !reflect.DeepEqual(testFiles, expected) {
 			t.Errorf("want %v\ngot %v", expected, testFiles)
 		}
-	}
+	})
 }

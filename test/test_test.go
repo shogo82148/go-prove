@@ -1,20 +1,20 @@
 package test
 
 import (
-	"io/ioutil"
 	"os"
+	"path/filepath"
 	"testing"
 )
 
 func TestRun_success(t *testing.T) {
-	f, err := ioutil.TempFile("", "")
-	if err != nil {
+	dir := t.TempDir()
+	filename := filepath.Join(dir, "foo.t")
+	if err := os.WriteFile(filename, []byte(`print "1..1\nok 1\n";`), 0644); err != nil {
 		t.Fatal(err)
 	}
-	f.WriteString(`print "1..1\nok 1\n";`)
 
 	test := &Test{
-		Path: f.Name(),
+		Path: filename,
 		Env:  os.Environ(),
 		Exec: "perl",
 	}
@@ -36,14 +36,14 @@ func TestRun_success(t *testing.T) {
 }
 
 func TestRun_fail(t *testing.T) {
-	f, err := ioutil.TempFile("", "")
-	if err != nil {
+	dir := t.TempDir()
+	filename := filepath.Join(dir, "foo.t")
+	if err := os.WriteFile(filename, []byte(`print "1..1\nnot ok 1\n";`), 0644); err != nil {
 		t.Fatal(err)
 	}
-	f.WriteString(`print "1..1\nnot ok 1\n";`)
 
 	test := &Test{
-		Path: f.Name(),
+		Path: filename,
 		Env:  os.Environ(),
 		Exec: "perl",
 	}
@@ -65,14 +65,14 @@ func TestRun_fail(t *testing.T) {
 }
 
 func TestRun_failplan(t *testing.T) {
-	f, err := ioutil.TempFile("", "")
-	if err != nil {
+	dir := t.TempDir()
+	filename := filepath.Join(dir, "foo.t")
+	if err := os.WriteFile(filename, []byte(`print "1..2\nok 1\n";`), 0644); err != nil {
 		t.Fatal(err)
 	}
-	f.WriteString(`print "1..2\nok 1\n";`)
 
 	test := &Test{
-		Path: f.Name(),
+		Path: filename,
 		Env:  os.Environ(),
 		Exec: "perl",
 	}
@@ -94,14 +94,14 @@ func TestRun_failplan(t *testing.T) {
 }
 
 func TestRun_empty(t *testing.T) {
-	f, err := ioutil.TempFile("", "")
-	if err != nil {
+	dir := t.TempDir()
+	filename := filepath.Join(dir, "foo.t")
+	if err := os.WriteFile(filename, []byte(`die "test failed!!!";`), 0644); err != nil {
 		t.Fatal(err)
 	}
-	f.WriteString(`die "test failed!!!";`)
 
 	test := &Test{
-		Path: f.Name(),
+		Path: filename,
 		Env:  os.Environ(),
 		Exec: "perl",
 	}
@@ -123,14 +123,14 @@ func TestRun_empty(t *testing.T) {
 }
 
 func TestRun_exitNonZero(t *testing.T) {
-	f, err := ioutil.TempFile("", "")
-	if err != nil {
+	dir := t.TempDir()
+	filename := filepath.Join(dir, "foo.t")
+	if err := os.WriteFile(filename, []byte(`print "1..1\nok 1\n"; exit 1;`), 0644); err != nil {
 		t.Fatal(err)
 	}
-	f.WriteString(`print "1..1\nok 1\n"; exit 1;`)
 
 	test := &Test{
-		Path: f.Name(),
+		Path: filename,
 		Env:  os.Environ(),
 		Exec: "perl",
 	}

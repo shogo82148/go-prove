@@ -105,7 +105,7 @@ func errorTestsuite(err error) *tap.Testsuite {
 	return &tap.Testsuite{
 		Ok: false,
 		Tests: []*tap.Testline{
-			&tap.Testline{
+			{
 				Ok:          false,
 				Num:         1,
 				Description: "unexpected error",

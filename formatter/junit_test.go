@@ -2,8 +2,8 @@ package formatter
 
 import (
 	"encoding/xml"
-	"io/ioutil"
 	"os"
+	"path/filepath"
 	"regexp"
 	"testing"
 
@@ -11,14 +11,14 @@ import (
 )
 
 func TestJUnit_success(t *testing.T) {
-	f, err := ioutil.TempFile("", "")
-	if err != nil {
+	dir := t.TempDir()
+	filename := filepath.Join(dir, "foo.t")
+	if err := os.WriteFile(filename, []byte(`print "1..1\nok 1\n";`), 0644); err != nil {
 		t.Fatal(err)
 	}
-	f.WriteString(`print "1..1\nok 1\n";`)
 
 	test := &test.Test{
-		Path: f.Name(),
+		Path: filename,
 		Env:  os.Environ(),
 		Exec: "perl",
 	}
@@ -42,14 +42,14 @@ func TestJUnit_success(t *testing.T) {
 }
 
 func TestJUnit_fail(t *testing.T) {
-	f, err := ioutil.TempFile("", "")
-	if err != nil {
+	dir := t.TempDir()
+	filename := filepath.Join(dir, "foo.t")
+	if err := os.WriteFile(filename, []byte(`print "1..1\nnot ok 1\n";`), 0644); err != nil {
 		t.Fatal(err)
 	}
-	f.WriteString(`print "1..1\nnot ok 1\n";`)
 
 	test := &test.Test{
-		Path: f.Name(),
+		Path: filename,
 		Env:  os.Environ(),
 		Exec: "perl",
 	}
@@ -74,14 +74,14 @@ func TestJUnit_fail(t *testing.T) {
 }
 
 func TestJUnit_failplan(t *testing.T) {
-	f, err := ioutil.TempFile("", "")
-	if err != nil {
+	dir := t.TempDir()
+	filename := filepath.Join(dir, "foo.t")
+	if err := os.WriteFile(filename, []byte(`print "1..2\nok 1\n";`), 0644); err != nil {
 		t.Fatal(err)
 	}
-	f.WriteString(`print "1..2\nok 1\n";`)
 
 	test := &test.Test{
-		Path: f.Name(),
+		Path: filename,
 		Env:  os.Environ(),
 		Exec: "perl",
 	}
@@ -107,14 +107,14 @@ func TestJUnit_failplan(t *testing.T) {
 }
 
 func TestJUnit_onlyFailed(t *testing.T) {
-	f, err := ioutil.TempFile("", "")
-	if err != nil {
+	dir := t.TempDir()
+	filename := filepath.Join(dir, "foo.t")
+	if err := os.WriteFile(filename, []byte(`print "1..2\nok 1\nnot ok 2\n";`), 0644); err != nil {
 		t.Fatal(err)
 	}
-	f.WriteString(`print "1..2\nok 1\nnot ok 2\n";`)
 
 	test := &test.Test{
-		Path: f.Name(),
+		Path: filename,
 		Env:  os.Environ(),
 		Exec: "perl",
 	}
