@@ -23,10 +23,18 @@ func TestParseArgs(t *testing.T) {
 func TestFindTestFiles(t *testing.T) {
 	// create dummy test files
 	dir := t.TempDir()
-	os.WriteFile(filepath.Join(dir, "foo.t"), []byte{}, 0644)
-	os.WriteFile(filepath.Join(dir, "foo.pl"), []byte{}, 0644)
-	os.MkdirAll(filepath.Join(dir, "foo", "bar"), 0777)
-	os.WriteFile(filepath.Join(dir, "foo", "bar", "foo.t"), []byte{}, 0644)
+	if err := os.WriteFile(filepath.Join(dir, "foo.t"), []byte{}, 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(dir, "foo.pl"), []byte{}, 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.MkdirAll(filepath.Join(dir, "foo", "bar"), 0777); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(dir, "foo", "bar", "foo.t"), []byte{}, 0644); err != nil {
+		t.Fatal(err)
+	}
 
 	t.Run("pass directory name", func(t *testing.T) {
 		p := NewProve()
