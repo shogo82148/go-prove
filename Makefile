@@ -14,6 +14,7 @@ clean:
 	-rm -rf dist
 
 # generate CREDITS file by using https://github.com/Songmu/gocredits
-CREDITS: go.mod go.sum
+.PHONY: credits
+credits: go.mod go.sum
 	go mod download
 	gocredits . > CREDITS

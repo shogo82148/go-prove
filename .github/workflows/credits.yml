@@ -22,7 +22,7 @@ jobs:
         run: go install github.com/Songmu/gocredits/cmd/gocredits@latest
 
       - name: Run gocredits
-        run: make CREDITS
+        run: make credits
       - name: commit and create a pull request
         uses: shogo82148/actions-commit-and-create-pr@v1
         with:
