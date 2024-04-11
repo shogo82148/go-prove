@@ -17,4 +17,4 @@ clean:
 .PHONY: credits
 credits: go.mod go.sum
 	go mod download
-	gocredits . > CREDITS
+	gocredits -w -skip-missing .
