@@ -15,4 +15,5 @@ clean:
 
 # generate CREDITS file by using https://github.com/Songmu/gocredits
 CREDITS: go.mod go.sum
+	go mod download
 	gocredits . > CREDITS
