@@ -1,6 +1,6 @@
 module github.com/shogo82148/go-prove
 
-go 1.22.2
+go 1.23.0
 
 require (
 	github.com/lestrrat-go/test-mysqld v0.0.0-20190527004737-6c91be710371
