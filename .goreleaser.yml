@@ -23,7 +23,7 @@ builds:
 checksum:
   name_template: "checksums.txt"
 archives:
-  - builds:
+  - ids:
       - "cli"
     files:
       - CREDITS
