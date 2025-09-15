@@ -48,7 +48,7 @@ type Formatter interface {
 	OpenTest(test *test.Test)
 
 	// Prints the report after all tests are run
-	Report()
+	Report() error
 }
 
 type Plugin interface {
