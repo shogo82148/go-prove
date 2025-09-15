@@ -23,7 +23,7 @@ builds:
 checksum:
   name_template: "checksums.txt"
 archives:
-  - builds:
+  - ids:
       - "cli"
     files:
       - CREDITS
@@ -32,8 +32,8 @@ archives:
     wrap_in_directory: true
     format_overrides:
       - goos: windows
-        format: zip
+        formats: [zip]
 snapshot:
-  name_template: "{{ .Tag }}-next"
+  version_template: "{{ .Tag }}-next"
 changelog:
   use: github-native
