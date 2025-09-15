@@ -32,7 +32,7 @@ archives:
     wrap_in_directory: true
     format_overrides:
       - goos: windows
-        format: zip
+        formats: [zip]
 snapshot:
   version_template: "{{ .Tag }}-next"
 changelog:
