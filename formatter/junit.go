@@ -84,8 +84,8 @@ func (f *JUnitFormatter) formatDuration(d time.Duration) string {
 
 // OpenTest implements prove.Formatter
 func (f *JUnitFormatter) OpenTest(test *test.Test) {
-	className := strings.Replace(test.Path, "/", "_", -1)
-	className = strings.Replace(className, ".", "_", -1)
+	className := strings.ReplaceAll(test.Path, "/", "_")
+	className = strings.ReplaceAll(className, ".", "_")
 
 	suite := test.Suite
 
