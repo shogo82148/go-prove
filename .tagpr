@@ -49,3 +49,4 @@
 	vPrefix = true
 	releaseBranch = main
 	versionFile = -
+	release = draft # https://songmu.jp/riji/entry/2025-09-05-coordinate-tagpr-and-goreleaser-with-immutable-releases.html

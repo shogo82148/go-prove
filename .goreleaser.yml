@@ -35,5 +35,10 @@ archives:
         formats: [zip]
 snapshot:
   version_template: "{{ .Tag }}-next"
+
+# https://songmu.jp/riji/entry/2025-09-05-coordinate-tagpr-and-goreleaser-with-immutable-releases.html
+release:
+  use_existing_draft: true
+
 changelog:
   use: github-native
