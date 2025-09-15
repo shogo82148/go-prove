@@ -18,10 +18,13 @@ func (f *TapFormatter) OpenTest(test *test.Test) {
 }
 
 // Report implements prove.Formatter
-func (f *TapFormatter) Report() {
+func (f *TapFormatter) Report() error {
 	for _, s := range f.Suites {
 		for _, t := range s.Tests {
-			fmt.Printf("%#v", t)
+			if _, err := fmt.Printf("%#v", t); err != nil {
+				return err
+			}
 		}
 	}
+	return nil
 }

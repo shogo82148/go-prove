@@ -140,7 +140,7 @@ func (f *JUnitFormatter) OpenTest(test *test.Test) {
 		ts.Errors++
 		testCase := JUnitTestCase{
 			Classname: className,
-			Name:      "Number of runned tests does not match plan.",
+			Name:      "Number of ran tests does not match plan.",
 			Time:      "0.000",
 			Failure: &JUnitFailure{
 				Message:  "Some test were not executed, The test died prematurely.",
@@ -155,11 +155,15 @@ func (f *JUnitFormatter) OpenTest(test *test.Test) {
 }
 
 // Report implements prove.Formatter
-func (f *JUnitFormatter) Report() {
+func (f *JUnitFormatter) Report() error {
 	out := os.Stdout
-	io.WriteString(out, xml.Header)
+	if _, err := io.WriteString(out, xml.Header); err != nil {
+		return err
+	}
 	enc := xml.NewEncoder(out)
 	enc.Indent("", "    ")
-	enc.Encode(f.Suites)
-	enc.Flush()
+	if err := enc.Encode(f.Suites); err != nil {
+		return err
+	}
+	return enc.Flush()
 }
