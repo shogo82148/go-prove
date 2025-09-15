@@ -1,0 +1,39 @@
+name: tagpr
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  tagpr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: read
+      id-token: write
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: generate GitHub App Token
+        id: generate
+        uses: shogo82148/actions-github-app-token@7ed70a12e0d77c0e3c946ef4d093e6d17f402935 # v1.0.3
+
+      - name: Check out source code
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          token: ${{ steps.generate.outputs.token }}
+          persist-credentials: false
+
+      - name: Set up Go
+        uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6.0.0
+        with:
+          go-version-file: go.mod
+
+      - id: run-tagpr
+        name: Run tagpr
+        uses: Songmu/tagpr@7191605433b03e11b313dbbc0efb80185170de4b # v1.9.0
+        env:
+          GITHUB_TOKEN: ${{ steps.generate.outputs.token }}
