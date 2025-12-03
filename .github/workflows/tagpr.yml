@@ -22,7 +22,7 @@ jobs:
         uses: shogo82148/actions-github-app-token@7ed70a12e0d77c0e3c946ef4d093e6d17f402935 # v1.0.3
 
       - name: Check out source code
-        uses: actions/checkout@c2d88d3ecc89a9ef08eebf45d9637801dcee7eb5 # v5.0.1
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v5.0.1
         with:
           token: ${{ steps.generate.outputs.token }}
           persist-credentials: false
