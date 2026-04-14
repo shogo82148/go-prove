@@ -4,7 +4,7 @@ go 1.23.0
 
 require (
 	github.com/lestrrat-go/test-mysqld v0.0.0-20190527004737-6c91be710371
-	github.com/mattn/go-shellwords v1.0.12
+	github.com/mattn/go-shellwords v1.0.13
 	github.com/shogo82148/go-tap v0.0.3
 	github.com/soh335/sliceflag v0.0.0-20160923061056-d2d28a5acab8
 )
