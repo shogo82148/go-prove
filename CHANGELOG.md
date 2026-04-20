@@ -1,5 +1,21 @@
 # Changelog
 
+## [v0.3.10](https://github.com/shogo82148/go-prove/compare/v0.3.9...v0.3.10) - 2026-04-20
+- Bump actions/checkout from 5 to 6 by @dependabot[bot] in https://github.com/shogo82148/go-prove/pull/81
+- Bump actions/checkout from 5.0.1 to 6.0.0 by @dependabot[bot] in https://github.com/shogo82148/go-prove/pull/83
+- Bump actions/checkout from 6.0.0 to 6.0.1 by @dependabot[bot] in https://github.com/shogo82148/go-prove/pull/84
+- Bump shogo82148/actions-github-app-token from 1.0.3 to 1.1.0 by @dependabot[bot] in https://github.com/shogo82148/go-prove/pull/85
+- Bump Songmu/tagpr from 1.9.0 to 1.17.1 by @dependabot[bot] in https://github.com/shogo82148/go-prove/pull/97
+- Bump goreleaser/goreleaser-action from 6 to 7 by @dependabot[bot] in https://github.com/shogo82148/go-prove/pull/96
+- Bump shogo82148/actions-github-app-token from 1.1.0 to 1.1.1 by @dependabot[bot] in https://github.com/shogo82148/go-prove/pull/93
+- Bump Songmu/tagpr from 1.17.1 to 1.18.1 by @dependabot[bot] in https://github.com/shogo82148/go-prove/pull/99
+- Bump Songmu/tagpr from 1.18.1 to 1.18.2 by @dependabot[bot] in https://github.com/shogo82148/go-prove/pull/100
+- Bump github.com/mattn/go-shellwords from 1.0.12 to 1.0.13 by @dependabot[bot] in https://github.com/shogo82148/go-prove/pull/101
+- Bump actions/checkout from 6.0.1 to 6.0.2 by @dependabot[bot] in https://github.com/shogo82148/go-prove/pull/90
+- Bump filippo.io/edwards25519 from 1.1.0 to 1.1.1 by @dependabot[bot] in https://github.com/shogo82148/go-prove/pull/95
+- Bump shogo82148/actions-github-app-token from 1.1.1 to 1.3.0 by @dependabot[bot] in https://github.com/shogo82148/go-prove/pull/102
+- Bump Songmu/tagpr from 1.18.2 to 1.18.3 by @dependabot[bot] in https://github.com/shogo82148/go-prove/pull/103
+
 ## [v0.3.9](https://github.com/shogo82148/go-prove/compare/v0.3.8...v0.3.9) - 2025-09-15
 - Update CREDITS by @github-actions[bot] in https://github.com/shogo82148/go-prove/pull/68
 - fix: could not find the license for "filippo.io/edwards25519" by @shogo82148 in https://github.com/shogo82148/go-prove/pull/67
