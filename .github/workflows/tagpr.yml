@@ -19,21 +19,21 @@ jobs:
     steps:
       - name: generate GitHub App Token
         id: generate
-        uses: shogo82148/actions-github-app-token@bf955a861ff7c9d64c86b567bac12d7baae5614a # v1.3.4
+        uses: shogo82148/actions-github-app-token@v1.3.4
 
       - name: Check out source code
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v5.0.1
+        uses: actions/checkout@v7.0.1
         with:
           token: ${{ steps.generate.outputs.token }}
           persist-credentials: false
 
       - name: Set up Go
-        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        uses: actions/setup-go@v7.0.0
         with:
           go-version-file: .go-version
 
       - id: run-tagpr
         name: Run tagpr
-        uses: Songmu/tagpr@e1250d6c84e4425db82b5e90549d62dfe23e9ebe # v1.21.4
+        uses: Songmu/tagpr@v1.21.4
         env:
           GITHUB_TOKEN: ${{ steps.generate.outputs.token }}
