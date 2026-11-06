@@ -20,7 +20,7 @@ workflows:
         - 'actions/checkout@v7.0.1'
         - 'actions/setup-go@v7.0.0'
         - 'shogo82148/actions-github-app-token@v1.3.4'
-        - 'songmu/tagpr@v1.21.4'
+        - 'songmu/tagpr@v1.22.0'
     '.github/workflows/test.yml':
         - 'actions/checkout@v7.0.1'
         - 'actions/setup-go@v7.0.0'
@@ -73,8 +73,8 @@ dependencies:
         commit: 'sha1-bf955a861ff7c9d64c86b567bac12d7baae5614a'
         owner_id: 1157344
         repo_id: 398574950
-    'songmu/tagpr@v1.21.4':
-        ref: 'v1.21.4'
-        commit: 'sha1-e1250d6c84e4425db82b5e90549d62dfe23e9ebe'
+    'songmu/tagpr@v1.22.0':
+        ref: 'v1.22.0'
+        commit: 'sha1-047aec4b6c0ce166f52958b5a97f5a3d927fd65b'
         owner_id: 177122
         repo_id: 524603982
